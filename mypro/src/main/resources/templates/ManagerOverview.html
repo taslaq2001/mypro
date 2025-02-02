@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <link rel="stylesheet" href="../static/css/ManagerOverview.css">
+     <script src = "../static/js/ManagerOverview.js"></script>
+</head>
+<body>
+    <div class ="bar">
+        <a href="Welcome.html" class="a"><b>log out</b> </a>
+        <form action= "" method = "POST">{% csrf_token %}
+            <p><input type="text" class="Search" placeholder="Search" name="Search" rows=1 ></p>
+        </form>            
+        <div class="b" id="chat-side-button" onclick="side()">
+            <b>chats</b>
+        </div>
+        <div class="side-content"id="chat-side">
+            <div class="indiv" id="1" onclick="show(10)">
+                name 1
+            </div>   
+            <hr width="90%">         
+            <div class="indiv" id ="2"onclick="show(20)">
+                name 2
+            </div>
+            <hr width="90%">
+        </div>
+        <div class="indivchat" id="10">
+            <p class ="x" onclick="exit()">Exit chat</p>
+            <br><br><br>
+            <p class="wr"> hello 1 </p>
+        </div>
+        <div class="indivchat" id="20">
+            <p class ="x" onclick="exit()">Exit chat</p>
+            <br><br><br>
+            <p class="wr"> hello 2 </p>
+        </div>
+        
+        <div class="c" onclick="toggleDropdown()">
+            <b>notifications</b>
+        </div>
+        <div class="dropdown-content" id="dropdown">
+            <p>task and date</p>
+            <hr width=90%>
+            <p>task 2 and date 2</p>
+        </div>
+    </div> 
+    <br><br><br><br>
+    <table class = "table">
+        <tr>
+            <th>Name</th>
+            <th>Task</th>
+            <th>Date</th>
+            <th>Status</th>
+            <th>Completed On</th>
+
+        </tr>
+        <tr class = "td">
+            <td>1</td>
+            <td>1</td>
+            <td>1</td>
+            <td>1</td>
+            <td>1</td>
+
+        </tr>
+        <tr class ="td">
+            <td>1</td>
+            <td>1</td>
+            <td>1</td>
+            <td>1</td>
+            <td>1</td>
+
+        </tr>
+        <tr class ="td">
+            <td>1</td>
+            <td>1</td>
+            <td>1</td>
+            <td>1</td>
+            <td>1</td>
+
+        </tr>
+
+    </table>
+    <br><br><br><br><br><br><br><br>
+    <center>
+        <div class="Container">
+            <button id="AssignTask" class ="Assign" onclick="assign()">Assign a new Task</button>
+            <div id = "AssignList" class="List">
+                    <form action= "" method = "POST">{% csrf_token %}
+                    <p><input type="text" placeholder="Nmae" name="assignedName" rows=1 ></p>
+                    <p><input type="text" placeholder="Due Date" name="dueDate" rows=1 ></p>
+                    <p><input type="text" placeholder="Task" name="assignedTask" rows=1 ></p>
+                    <button type="submit">submit</button>
+                </form> 
+            </div>
+        </div>
+        <br><br>
+        <div class ="Container">
+            <button id="PostTask" class ="Post" onclick="post()">Post a new Task</button>
+            <div id="PostList" class ="List">
+                <form action= "" method = "POST">{% csrf_token %}
+                    <p><input type="text" placeholder="Due Date" name="dueDate" rows=1 ></p>
+                    <p><input type="text" placeholder="Task" name="assignedTask" rows=1 ></p>
+                    <button type="submit">submit</button>
+                </form> 
+            </div>
+        </div>
+        <br><br>
+        <a href="Calendar.html">
+            <button class = "go">Go to Calendar</button>
+        </a>
+        
+    </center>
+
+
+</body>
+

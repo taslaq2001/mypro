@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <link rel="stylesheet" href="../static/css/Welcome.css">
+     
+</head>
+<body>
+    
+    
+    <center>
+    <BR><BR><BR><BR><BR>      
+    <p class="p1"> Welcome</p>
+    <br>
+    <p class ="p2"> Sigin in with your username and password</p>
+    <br>
+    <form action= "" method = "POST">{% csrf_token %}
+    <p><input type="text" placeholder="Username" name="Username"required cols ="35" rows=1 ></p>
+    <p><input type="password" placeholder="Password" name="password"required cols ="35" rows=1 ></p>
+    <button type="submit" class="ButtonLogIn">Log in</button>
+    </form>
+    <p class ="p2">You don't have an account or forgot your password? Contact the manager</p>
+    <a href="mailto:abdurrahman.taslaq1@gmail.com">
+        <button>click here</button>
+    </a>
+    </center>
+    
+</body>
