@@ -3,7 +3,99 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-    <link rel="stylesheet" href="../static/css/Calendar.css">     
+    <!--<link rel="stylesheet" href="../static/css/Calendar.css">-->  
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: rgb(223, 214, 214);
+            margin: 0;
+        }
+
+        .calendar {
+            width: 900px;
+            height: auto;
+            max-width: auto;
+            max-height: auto;
+            background-color: white;
+            border-top-right-radius: 15px; 
+            border-top-left-radius: 15px; 
+            border-bottom-right-radius: 15px; 
+            border-bottom-left-radius: 15px; 
+        }
+        .calendar-header {
+            text-align: center;
+            background-color: rgb(86, 130, 224);
+            color: white;
+            padding: 10px;
+            font-size: 1.2em;
+            font-weight: bold;
+            border-top-right-radius: 15px; 
+            border-top-left-radius: 15px; 
+
+        }
+
+        .prev{
+            float: left;
+            display: block;
+            border-radius: 50%;
+            font-size: 40px;
+        }
+        .prev:hover{
+            background-color:rgb(187, 179, 179);
+            cursor: pointer;
+        }
+        .next{
+            float: right;
+            display: block;
+            border-radius: 50%;
+            font-size: 40px;
+        }
+        .next:hover{
+            background-color:rgb(187, 179, 179);
+            cursor: pointer;
+        }
+
+        .calendar-days {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            background-color:  rgb(86, 130, 224);
+            color: white;
+        }
+        .calendar-days div {
+            padding: 10px;
+            text-align: center;
+            font-weight: bold;
+        }
+        .calendar-dates {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+        }
+        .calendar-dates div {
+            padding: 30px;
+            text-align: center;
+            font-weight: bold;
+        }
+        .today {
+            background-color: #146096;
+            font-weight: bold;
+            border-radius: 50px;
+        }
+        .calendar-dates div:hover{
+            background-color: rgb(187, 179, 179);
+            border-radius: 50px;
+
+        }
+        .empty{
+            background: none;
+            pointer-events: none;
+        }     
+
+
+    </style>   
 </head>
 <body>
 <div class="calendar">
@@ -26,5 +118,72 @@
 
     </div>
 </div>
-<script src="../static/js/Calendar.js"></script>
+<!--<script src="../static/js/Calendar.js"></script>-->
+<script>
+    let date = new Date();
+    let currentMonth = date.getMonth();
+    let currentYear = date.getFullYear();
+
+    const monthYear = document.getElementById("month-year");
+    const calendarDates = document.getElementById("calendar-dates");
+
+    const months = [
+        "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+    ];
+
+    function generateCalendar(month, year) {
+        calendarDates.innerHTML = "";  
+        let firstDay = new Date(year, month, 1).getDay();  
+        let daysInMonth = new Date(year, month + 1, 0).getDate();  
+
+    
+        let adjustedFirstDay = (firstDay === 0) ? 6 : firstDay - 1;
+
+        monthYear.innerHTML = `${months[month]} ${year}`;
+
+
+        for (let i = 0; i < adjustedFirstDay; i++) {
+            const emptyDiv = document.createElement("div");
+            emptyDiv.classList.add("empty");  
+            calendarDates.appendChild(emptyDiv);
+        }
+
+    
+        for (let day = 1; day <= daysInMonth; day++) {
+            const dayDiv = document.createElement("div");
+            dayDiv.innerHTML = day;
+
+            if (
+                day === date.getDate() &&
+                year === date.getFullYear() &&
+                month === date.getMonth()
+            ) {
+                dayDiv.classList.add("today");
+            }
+
+            calendarDates.appendChild(dayDiv);
+        }
+    }
+
+    function prevMonth() {
+        currentMonth--;
+        if (currentMonth < 0) {
+            currentMonth = 11;
+            currentYear--;
+        }
+        generateCalendar(currentMonth, currentYear);
+    }
+
+    function nextMonth() {
+        currentMonth++;
+        if (currentMonth > 11) {
+            currentMonth = 0;
+            currentYear++;
+        }
+        generateCalendar(currentMonth, currentYear);
+    }
+
+    generateCalendar(currentMonth, currentYear);
+</script>
 </body>
