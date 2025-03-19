@@ -11,6 +11,7 @@ import lombok.AllArgsConstructor;
 @Service
 public class staffService {
 
+
     
     @Autowired staffRepository stfrepository;
     public staff saveUser(String name, String username, String password, String email){ 
@@ -21,4 +22,12 @@ public class staffService {
         user.setUsername(username);
         return stfrepository.save(user);
     }
+    public staff loginStaff(String username, String password)throws NullPointerException{
+        staff user=stfrepository.findByUsername(username);
+        if (user == null || !password.equals(user.getPassword())) {
+            throw new NullPointerException("Invalid username or password.");
+        }
+        return user;
+    }
+
 }

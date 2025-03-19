@@ -77,8 +77,8 @@
     <br>
     <p class ="p2"> Sigin in with your username and password</p>
     <br>
-    <form action= "" method = "POST">{% csrf_token %}
-    <p><input type="text" placeholder="Username" name="Username"required cols ="35" rows=1 ></p>
+    <form action= "/login" method = "POST">
+    <p><input type="text" placeholder="Username" name="username"required cols ="35" rows=1 ></p>
     <p><input type="password" placeholder="Password" name="password"required cols ="35" rows=1 ></p>
     <button type="submit" class="ButtonLogIn">Log in</button>
     </form>
