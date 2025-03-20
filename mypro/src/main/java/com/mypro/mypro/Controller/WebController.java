@@ -1,5 +1,6 @@
 package com.mypro.mypro.Controller;
 
+import com.mypro.mypro.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,8 +15,11 @@ import org.springframework.ui.Model;
 
 import com.mypro.mypro.service.staffService;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 @Controller
 public class WebController {
+    /* 
     @Autowired
     private staffService stfservice;
     @PostMapping("/login")
@@ -28,10 +32,30 @@ public class WebController {
             model.addAttribute("error", "Invalid username or password.");
             return "Welcome"; 
         }
+            
     
     }
-    @GetMapping("/")
+    */
+    @Autowired
+    private staffService stfservice;
+    @PostMapping("/login")
+    public String logIn(@RequestParam String username,@RequestParam String password, HttpServletRequest request) {
+        try {
+            staff user = stfservice.validateLogin(username, password, request);
+            if (user!=null){
+                request.getSession().setAttribute("staff",user);
+                return "redirect:/api1/tasks";
+            }
+        }catch (Exception e) {
+            return "Welcome";
+        }
+        return "Welcome"; 
+    }
+
+
+     @GetMapping("/")
     public String welcome(){
         return ("Welcome");
     }
+
 }    

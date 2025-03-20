@@ -302,7 +302,7 @@
 <body>
     <div class ="bar">
         <a href="Welcome.html" class="a"><b>log out</b> </a>
-        <form action= "" method = "POST">{% csrf_token %}
+        <form action= "" method = "POST">
             <p><input type="text" class="Search" placeholder="Search" name="Search" rows=1 ></p>
         </form>            
         <div class="b" id="chat-side-button" onclick="side()">
@@ -375,7 +375,7 @@
         <div class ="Container">
             <button id="AddTask" class ="add" onclick="Add()">Add a new Task</button>
             <div id="AddList" class ="List">
-                <form action= "" method = "POST">{% csrf_token %}
+                <form action= "" method = "POST">
                     <p><input type="text" placeholder="Due Date" name="dueDate" rows=1 ></p>
                     <p><input type="text" placeholder="Task" name="assignedTask" rows=1 ></p>
                     <button type="submit">submit</button>
