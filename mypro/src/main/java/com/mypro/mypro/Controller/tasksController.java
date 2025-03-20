@@ -4,11 +4,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.mypro.mypro.repository.staffRepository;
 import com.mypro.mypro.service.staffService;
+import com.mypro.mypro.service.tasksService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import com.mypro.mypro.model.*;
 
+import java.sql.Date;
+import java.time.LocalDateTime;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -75,8 +80,15 @@ public class tasksController{
         */
 
 
-
-
+    @Autowired
+    private tasksService tskService;
+    @PostMapping("add_tasks")
+    public String saveTasks(@RequestParam String title , @RequestParam String describtion, @RequestParam int assigned_to,@RequestParam Date dueDate, @RequestParam String status) {
+        Date completed_on=java.sql.Date.valueOf("2000-02-01");
+        tskService.saveTask(title, describtion, assigned_to, dueDate, status, completed_on);
+        return "redirect:/api1/tasks";
+    }
+    
     @GetMapping("Calendar.html")
     public String clndr(){
         return ("Calendar");

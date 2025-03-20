@@ -341,29 +341,20 @@
     <br><br><br><br>
     <table class = "table">
         <tr>
-            <th>Date</th>
-            <th>Task</th>
+            <th>Title</th>
+            <th>Describtion</th>
+            <th>Due Date</th>
             <th>Status</th>
+            <th>Created on</th>
         </tr>
+        {% for tasks in tasks%}
         <tr class = "td">
-            <td>1</td>
-            <td>1</td>
-            <td>1</td>
-        </tr>
-        <tr class ="td">
-            <td>1</td>
-            <td>1</td>
-            <td>1</td>
-        </tr>
-        <tr class ="td">
-            <td>1</td>
-            <td>1</td>
-            <td>1</td>
-        </tr>
-        <tr class ="td">
-            <td>1</td>
-            <td>1</td>
-            <td>1</td>
+            <td>{{ tasks.title}}</td>
+            <td>{{ tasks.describtion}}</td>
+            <td>{{ tasks.dueDtae}}</td>
+            <td>{{ tasks.status}}</td>
+            <td>{{ tasks.created_at}}</td>
+        {%end for%}
         </tr>
     </table>
     <br><br><br><br><br><br><br><br>
@@ -375,9 +366,12 @@
         <div class ="Container">
             <button id="AddTask" class ="add" onclick="Add()">Add a new Task</button>
             <div id="AddList" class ="List">
-                <form action= "" method = "POST">
-                    <p><input type="text" placeholder="Due Date" name="dueDate" rows=1 ></p>
-                    <p><input type="text" placeholder="Task" name="assignedTask" rows=1 ></p>
+                <form action= "/api1/add_tasks" method = "POST">
+                    <p><input type="text" placeholder="Title" name="title" rows=1 ></p>
+                    <p><input type="text" placeholder="Describtion" name="describtion" rows=1 ></p>
+                    <p><input type="text" placeholder="Assign it to person_id" name="assigned_to" rows=1 ></p>
+                    <p><input type="date" placeholder="Due Dtae" name="dueDate" rows=1 ></p>
+                    <p><input type="text" placeholder="Status" name="status" rows=1 ></p>
                     <button type="submit">submit</button>
                 </form> 
             </div>

@@ -6,6 +6,8 @@ import jakarta.persistence.GenerationType;
 import lombok.Data;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+
+import java.sql.Date;
 import java.time.LocalDateTime;
 
 @Entity
@@ -20,8 +22,54 @@ public class tasks{
 	private String title ;
 	private String describtion;
 	private int assigned_to;
-	private LocalDateTime dueDate;
+	private Date dueDate;
     private String status;
-    private LocalDateTime creeated_at;
-	private LocalDateTime completed_on;
+    private Date created_at;
+	private Date completed_on;
+
+    public void setTitle(String title){
+        this.title=title;
+    }
+    public void setDescribtion(String describtion){
+        this.describtion=describtion;
+    }
+    public void setAssigned_to(int assigned_to){
+        this.assigned_to=assigned_to;
+    }
+    public void setDueDtae(Date dueDate){
+        this.dueDate=dueDate;
+    }
+    public void setStatus(String status){
+        this.status=status;
+    }
+    public void setCreated_at(Date created_at){
+        this.created_at=created_at;
+    }
+    public void setCompleted_on(Date completed_on){
+        this.completed_on=completed_on;
+    }
+    public String getTitle(){
+        return title;
+    }
+    public String getDescribtion(){
+        return describtion;
+    }
+    public int getAssigned_to(){
+        return assigned_to;
+    }
+    public Date getDueDate(){
+        return dueDate;
+    }
+    public String getStatus(){
+        return status;
+    }
+    public Date getCreated_at(){
+        return created_at;
+    }
+    public Date getCompleted_on(){
+        return completed_on;
+    }
+
+
 }
+
