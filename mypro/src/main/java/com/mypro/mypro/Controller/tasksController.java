@@ -11,6 +11,8 @@ import com.mypro.mypro.model.*;
 
 import java.sql.Date;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -34,12 +36,25 @@ public class tasksController{
         return "ToDoList";
     }
     */
+    @Autowired
+    private tasksService tskService2;
     @GetMapping("/tasks")
-    public String mainPage(HttpServletRequest request) {
+    public String mainPage(HttpServletRequest request, Model model) {
         staff user = (staff) request.getSession().getAttribute("staff");
         if (user == null) {
             return "redirect:/api1/Welcome.html";
         }
+        int currentUser = user.getPerson_id();
+        List<tasks> allTasks=tskService2.showTasks();
+        List<tasks> usersTasks=new ArrayList<>();
+        int i = allTasks.size();
+        for (int j=0; j<i;  j++){
+            if (allTasks.get(j).getAssigned_to()==currentUser){
+                usersTasks.add(allTasks.get(j));
+            }
+
+        }
+        model.addAttribute("tasks", usersTasks);
         return "ToDoList";
     }    
   
@@ -86,6 +101,7 @@ public class tasksController{
     public String saveTasks(@RequestParam String title , @RequestParam String describtion, @RequestParam int assigned_to,@RequestParam Date dueDate, @RequestParam String status) {
         Date completed_on=java.sql.Date.valueOf("2000-02-01");
         tskService.saveTask(title, describtion, assigned_to, dueDate, status, completed_on);
+        tskService.showTasks();
         return "redirect:/api1/tasks";
     }
     

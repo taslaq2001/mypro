@@ -347,14 +347,13 @@
             <th>Status</th>
             <th>Created on</th>
         </tr>
-        {% for tasks in tasks%}
-        <tr class = "td">
-            <td>{{ tasks.title}}</td>
-            <td>{{ tasks.describtion}}</td>
-            <td>{{ tasks.dueDtae}}</td>
-            <td>{{ tasks.status}}</td>
-            <td>{{ tasks.created_at}}</td>
-        {%end for%}
+        <tr class = "td" th:each="task : ${tasks}">
+            <td th:text="${task.title}"></td>
+            <td th:text="${task.describtion}"></td>
+            <td th:text="${task.dueDate}"></td>
+            <td th:text="${task.status}"></td>
+            <td th:text="${task.created_at}"></td>
+        
         </tr>
     </table>
     <br><br><br><br><br><br><br><br>
