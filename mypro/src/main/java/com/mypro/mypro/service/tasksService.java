@@ -36,4 +36,7 @@ public class tasksService{
         return allTasks;
     
     }
+    public void delete(tasks task){
+        tskrepository.delete(task);
+    }
 }
