@@ -83,6 +83,28 @@ public class tasksController{
         }
         return "redirect:/api1/tasks";
     }
+    @PostMapping("change1/{id}")
+    public String taskCompleted(@PathVariable("id") int id,@RequestParam("status") String status, @RequestParam(value = "otherStatus", required = false) String otherStatus) {
+        Optional<tasks> task=tskrepository.findById(id);
+        if (task.isPresent()) {
+            tasks taskA = task.get();
+
+            if ("other".equals(status)) {
+                taskA.setStatus(otherStatus);
+                Date d=java.sql.Date.valueOf("1111-11-11");
+                taskA.setCompleted_on(d);                
+            } else {
+                taskA.setStatus(status);
+                Date d=new Date(System.currentTimeMillis());
+                taskA.setCompleted_on(d);
+            }
+            tskrepository.save(taskA);
+
+        }    
+        return "redirect:/api1/tasks";
+
+    }
+    
 
 
     
@@ -130,7 +152,7 @@ public class tasksController{
 
     @PostMapping("add_tasks")
     public String saveTasks(@RequestParam String title , @RequestParam String describtion, @RequestParam int assigned_to,@RequestParam Date dueDate, @RequestParam String status) {
-        Date completed_on=java.sql.Date.valueOf("2000-02-01");
+        Date completed_on=java.sql.Date.valueOf("1111-11-11");
         tskService.saveTask(title, describtion, assigned_to, dueDate, status, completed_on);
         tskService.showTasks();
         return "redirect:/api1/tasks";
