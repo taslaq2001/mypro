@@ -274,7 +274,55 @@ public class tasksController{
     }
     
     
+    @PostMapping("/clndr")
+    public String clndrDateTask(@RequestParam(name="taskdate", required=true) String d, HttpServletRequest request, Model model) {
+        Date date=java.sql.Date.valueOf(d);
+        staff user = (staff) request.getSession().getAttribute("staff");
+        if (user == null) {
+            return "redirect:/api1/Welcome.html";
+        }
+        String currentUser = user.getUsername();
+        List<tasks> allTasks=tskService.showTasks();
+        if (currentUser.startsWith("mngr")){
+            List<tasks> allUsersTasks=new ArrayList<>();
+            int k= allTasks.size();
+            for (int j=0; j<k; j++){
+                if (allTasks.get(j).getDueDate().compareTo(date)==0){
+                    allUsersTasks.add(allTasks.get(j));
+                }
+            }
+            model.addAttribute("tasks", allUsersTasks);
+            model.addAttribute("staff",stfService.showUsers());
 
+            return "ManagerOverview";
+        }else{
+            List<tasks> usersTasks=new ArrayList<>();
+            int i = allTasks.size();
+            for (int j=0; j<i;  j++){
+                if (allTasks.get(j).getAssigned_to()==null || allTasks.get(j).getAssigned_to().equals(currentUser)){
+                    usersTasks.add(allTasks.get(j));
+                }
+    
+            }
+            List<tasks> usersNewTasks=new ArrayList<>();
+            int k= usersTasks.size();
+            for (int j=0; j<k; j++){
+                if (usersTasks.get(j).getDueDate().compareTo(date)==0){
+                    usersNewTasks.add(usersTasks.get(j));
+                }
+            }
+            model.addAttribute("tasks", usersNewTasks);
+            return "ToDoList";
+
+        }
+
+        
+
+            
+
+        
+    }
+    
 
     
     

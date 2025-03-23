@@ -8,6 +8,7 @@
         body {
             font-family: Arial, sans-serif;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
@@ -26,6 +27,7 @@
             border-bottom-right-radius: 15px; 
             border-bottom-left-radius: 15px; 
         }
+
         .calendar-header {
             text-align: center;
             background-color: rgb(86, 130, 224);
@@ -35,7 +37,6 @@
             font-weight: bold;
             border-top-right-radius: 15px; 
             border-top-left-radius: 15px; 
-
         }
 
         .prev{
@@ -65,40 +66,68 @@
             background-color:  rgb(86, 130, 224);
             color: white;
         }
+
         .calendar-days div {
             padding: 10px;
             text-align: center;
             font-weight: bold;
         }
+
         .calendar-dates {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
         }
-        .calendar-dates div {
+
+        .calendar-day {
             padding: 30px;
             text-align: center;
             font-weight: bold;
         }
+
+        .clndrtsk {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .clndrtsk:hover {
+            background-color: rgb(187, 179, 179);
+            border-radius: 50px;
+            transform: scale(1.1);
+        }
+
         .today {
             background-color: #146096;
+            color: white;
             font-weight: bold;
             border-radius: 50px;
         }
-        .calendar-dates div:hover{
-            background-color: rgb(187, 179, 179);
-            border-radius: 50px;
 
-        }
-        .empty{
+        .empty {
             background: none;
             pointer-events: none;
-        }     
+        }  
+
+        .choose {
+            color:  #146096;
+            font-size: x-large;
+            font-style: normal;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            padding-left: 40px;
+        }
 
 
     </style>   
 </head>
 <body>
-<div class="calendar">
+    <p class="choose"> klick on the date to see the tasks on that date</p>
+
+    <div class="calendar">
     <div class="calendar-header">
         <b class="prev" onclick="prevMonth()"> &#10094;</b>
         <b class="next" onclick="nextMonth()">&#10095;</b>
@@ -113,10 +142,9 @@
         <div>Sat</div>
         <div>Sun</div>
     </div>
-
-    <div class="calendar-dates" id="calendar-dates">
-
-    </div>
+    <form action="/api1/clndr" method="post">
+        <div class="calendar-dates" id="calendar-dates"></div>
+    </form>
 </div>
 <!--<script src="../static/js/Calendar.js"></script>-->
 <script>
@@ -137,29 +165,43 @@
         let firstDay = new Date(year, month, 1).getDay();  
         let daysInMonth = new Date(year, month + 1, 0).getDate();  
 
-    
         let adjustedFirstDay = (firstDay === 0) ? 6 : firstDay - 1;
-
         monthYear.innerHTML = `${months[month]} ${year}`;
 
-
+        // Add empty divs for spacing before the first day
         for (let i = 0; i < adjustedFirstDay; i++) {
             const emptyDiv = document.createElement("div");
             emptyDiv.classList.add("empty");  
             calendarDates.appendChild(emptyDiv);
         }
 
-    
+        // Create date buttons and forms
         for (let day = 1; day <= daysInMonth; day++) {
             const dayDiv = document.createElement("div");
-            dayDiv.innerHTML = day;
+            dayDiv.classList.add("calendar-day");
 
-            if (
-                day === date.getDate() &&
-                year === date.getFullYear() &&
-                month === date.getMonth()
-            ) {
-                dayDiv.classList.add("today");
+            // Create the form for each day
+            const form = document.createElement("form");
+            form.action = "/api1/clndr";
+            form.method = "post";
+
+            const button = document.createElement("button");
+            button.type = "submit";
+            button.innerText = day;
+            button.classList.add("clndrtsk");
+
+            const hiddenInput = document.createElement("input");
+            hiddenInput.type = "hidden";
+            hiddenInput.name = "taskdate";
+            hiddenInput.value = `${year}-${month + 1}-${day}`;  // Format: YYYY-MM-DD
+
+            form.appendChild(hiddenInput);
+            form.appendChild(button);
+            dayDiv.appendChild(form);
+
+            // Highlight today’s date
+            if (day === date.getDate() && year === date.getFullYear() && month === date.getMonth()) {
+                button.classList.add("today");
             }
 
             calendarDates.appendChild(dayDiv);
@@ -184,6 +226,9 @@
         generateCalendar(currentMonth, currentYear);
     }
 
+    // Initialize calendar with current month and year
     generateCalendar(currentMonth, currentYear);
+
+
 </script>
 </body>
