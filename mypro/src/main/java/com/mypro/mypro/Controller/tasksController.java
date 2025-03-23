@@ -77,7 +77,7 @@ public class tasksController{
 
 
     @DeleteMapping("/delete/{id}")
-    public String deleteTask(@PathVariable("id") int id, RedirectAttributes redirectAttributes) {
+    public String deleteTask(@PathVariable("id") int id, RedirectAttributes redirectAttributes ,HttpServletRequest request) {
         Optional<tasks> taskOptional = tskrepository.findById(id);
         if (taskOptional.isPresent()) {
             tasks taskA = taskOptional.get();
@@ -86,6 +86,10 @@ public class tasksController{
         } else {
             redirectAttributes.addFlashAttribute("error", "Task not found.");
         }
+        staff user = (staff) request.getSession().getAttribute("staff");
+        if (user.getUsername().startsWith("mngr")){
+            return "redirect:/api2/mngr";
+        }   
         return "redirect:/api1/tasks";
     }
     @PostMapping("change1/{id}")
