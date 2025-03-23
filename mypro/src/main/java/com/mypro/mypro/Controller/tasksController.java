@@ -53,17 +53,22 @@ public class tasksController{
         if (user == null) {
             return "redirect:/api1/Welcome.html";
         }
-        int currentUser = user.getPerson_id();
+        String currentUser = user.getUsername();
         List<tasks> allTasks=tskService.showTasks();
         List<tasks> usersTasks=new ArrayList<>();
         int i = allTasks.size();
         for (int j=0; j<i;  j++){
-            if (allTasks.get(j).getAssigned_to()==currentUser){
+            if (allTasks.get(j).getAssigned_to()==null || allTasks.get(j).getAssigned_to().equals(currentUser)){
                 usersTasks.add(allTasks.get(j));
             }
 
         }
         model.addAttribute("tasks", usersTasks);
+        
+        if (currentUser.startsWith("mngr")){
+            return "ManagerOverview";
+        }  
+            
         return "ToDoList";
     }   
 
@@ -84,7 +89,7 @@ public class tasksController{
         return "redirect:/api1/tasks";
     }
     @PostMapping("change1/{id}")
-    public String taskCompleted(@PathVariable("id") int id,@RequestParam("status") String status, @RequestParam(value = "otherStatus", required = false) String otherStatus) {
+    public String taskCompleted(HttpServletRequest request,@PathVariable("id") int id,@RequestParam("status") String status, @RequestParam(value = "otherStatus", required = false) String otherStatus) {
         Optional<tasks> task=tskrepository.findById(id);
         if (task.isPresent()) {
             tasks taskA = task.get();
@@ -100,7 +105,11 @@ public class tasksController{
             }
             tskrepository.save(taskA);
 
-        }    
+        } 
+        staff user = (staff) request.getSession().getAttribute("staff");
+        if (user.getUsername().startsWith("mngr")){
+            return "redirect:/api2/mngr";
+        }   
         return "redirect:/api1/tasks";
 
     }
@@ -149,13 +158,54 @@ public class tasksController{
     }
         */
 
-
     @PostMapping("add_tasks")
-    public String saveTasks(@RequestParam String title , @RequestParam String describtion, @RequestParam int assigned_to,@RequestParam Date dueDate, @RequestParam String status) {
+    public String saveTasks( @RequestParam String title , @RequestParam String describtion, @RequestParam String assigned_to,@RequestParam Date dueDate) {
         Date completed_on=java.sql.Date.valueOf("1111-11-11");
+        String status="open";
         tskService.saveTask(title, describtion, assigned_to, dueDate, status, completed_on);
         tskService.showTasks();
+        /* 
+        staff user = (staff) request.getSession().getAttribute("staff");
+        if (user.getUsername().startsWith("mngr")){
+            return "redirect:/api2/mngr";
+        }
         return "redirect:/api1/tasks";
+        */
+        return "redirect:/api2/mngr";
+
+    }
+    @PostMapping("post_tasks")
+    public String postTasks(@RequestParam String title , @RequestParam String describtion,@RequestParam Date dueDate) {
+        Date completed_on=java.sql.Date.valueOf("1111-11-11");
+        String status="open";
+        String title1=" TO ANYONE   "+title;
+        tskService.saveTask(title1, describtion, null, dueDate, status, completed_on);
+        tskService.showTasks();
+        /* 
+        staff user = (staff) request.getSession().getAttribute("staff");
+        if (user.getUsername().startsWith("mngr")){
+            return "redirect:/api2/mngr";
+        }
+        return "redirect:/api1/tasks";
+        */
+        return "redirect:/api2/mngr";
+
+    }
+
+    @PostMapping("add_ownTasks")
+    public String saveOwnTasks(HttpServletRequest request, @RequestParam String title , @RequestParam String describtion,@RequestParam Date dueDate) {
+        Date completed_on=java.sql.Date.valueOf("1111-11-11");
+        staff user = (staff) request.getSession().getAttribute("staff");
+        String assigned_to=user.getUsername();
+        String status="open";
+        tskService.saveTask(title, describtion, assigned_to, dueDate, status, completed_on);
+        tskService.showTasks();
+        
+        if (user.getUsername().startsWith("mngr")){
+            return "redirect:/api2/mngr";
+        }
+        return "redirect:/api1/tasks";
+
     }
     
     @GetMapping("Calendar.html")

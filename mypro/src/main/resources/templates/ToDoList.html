@@ -404,7 +404,7 @@
             <td>
                 <span th:text="${task.status}"></span>
                 <form th:action="@{/api1/change1/{id}(id=${task.task_id})}" method = "POST">
-                <select id="status" name="status" onchange="change()">
+                <select id="status" name="status" onchange="change(this)">
                         <option value="" hidden selected>Change</option>
                     
                         <option value="completed">completed</option>
@@ -440,6 +440,20 @@
         <div class ="Container">
             <button id="AddTask" class ="add" onclick="Add()">Add a new Task</button>
             <div id="AddList" class ="List">
+                <form action= "/api1/add_ownTasks" method = "POST">
+                    <p><input type="text" placeholder="Title" name="title" rows=1 ></p>
+                    <p><input type="text" placeholder="Describtion" name="describtion" rows=1 ></p>
+                    <p>choose the due date</p>
+                    <p><input type="date" name="dueDate" rows=1 ></p>
+                    <button type="submit">submit</button>
+                </form> 
+            </div>
+        </div>
+        <br><br>
+        <!--
+        <div class ="Container">
+            <button id="AddTask" class ="add" onclick="Add()">Add a new Task</button>
+            <div id="AddList" class ="List">
                 <form action= "/api1/add_tasks" method = "POST">
                     <p><input type="text" placeholder="Title" name="title" rows=1 ></p>
                     <p><input type="text" placeholder="Describtion" name="describtion" rows=1 ></p>
@@ -450,17 +464,20 @@
                 </form> 
             </div>
         </div>
+    -->
     </center>
 
     <script>
 
-        function change(){
-            const otherSts=document.getElementById('otherSts');
-            if (document.getElementById('status').value==="other"){
-                otherSts.style.display='block';
-                
-            }else{
-                otherSts.style.display='none';
+        function change(selectElement) {
+            const row = selectElement.closest('tr'); 
+            
+            const otherSts = row.querySelector('.change');
+
+            if (selectElement.value === "other") {
+                otherSts.style.display = 'block';
+            } else {
+                otherSts.style.display = 'none';
             }
         }
         

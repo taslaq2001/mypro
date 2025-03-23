@@ -21,7 +21,7 @@ public class tasks{
     private int task_id;
 	private String title ;
 	private String describtion;
-	private int assigned_to;
+	private String assigned_to;
 	private Date dueDate;
     private String status;
     private Date created_at;
@@ -33,7 +33,7 @@ public class tasks{
     public void setDescribtion(String describtion){
         this.describtion=describtion;
     }
-    public void setAssigned_to(int assigned_to){
+    public void setAssigned_to(String assigned_to){
         this.assigned_to=assigned_to;
     }
     public void setDueDtae(Date dueDate){
@@ -54,7 +54,7 @@ public class tasks{
     public String getDescribtion(){
         return describtion;
     }
-    public int getAssigned_to(){
+    public String getAssigned_to(){
         return assigned_to;
     }
     public Date getDueDate(){

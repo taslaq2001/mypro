@@ -44,7 +44,11 @@ public class WebController {
             staff user = stfservice.validateLogin(username, password, request);
             if (user!=null){
                 request.getSession().setAttribute("staff",user);
-                return "redirect:/api1/tasks";
+                if (user.getUsername().startsWith("mngr")){
+                    return "redirect:/api2/mngr";
+                }else{
+                    return "redirect:/api1/tasks";
+                }
             }
         }catch (Exception e) {
             return "Welcome";

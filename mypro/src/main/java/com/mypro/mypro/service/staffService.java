@@ -1,5 +1,7 @@
 package com.mypro.mypro.service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,7 @@ import com.mypro.mypro.repository.staffRepository;
 import jakarta.servlet.http.HttpServletRequest;
 
 import com.mypro.mypro.model.staff;
+import com.mypro.mypro.model.tasks;
 
 import lombok.AllArgsConstructor;
 
@@ -43,6 +46,20 @@ public class staffService {
         return user;
     }
     */
+        public List<staff> showUsers(){
+                //
+            List<staff> allUsers = stfrepository.findAll();
+            //List<String> allUsernames = new ArrayList<>();
+            /* 
+            int i =allUsers.size();
+            for(int j=0;j<i;j++){
+                allUsernames.add(allUsers.get(j).getUsername());
+            }
+            return allUsernames;
+            */
+            return allUsers;
+            
+    }
     public staff validateLogin(@RequestParam String username,@RequestParam String password, HttpServletRequest request) {
             staff user=stfrepository.findByUsername(username);
             if (user == null || !password.equals(user.getPassword())) {

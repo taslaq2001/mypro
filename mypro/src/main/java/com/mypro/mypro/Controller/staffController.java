@@ -3,9 +3,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mypro.mypro.model.staff;
+import com.mypro.mypro.model.tasks;
 import com.mypro.mypro.service.staffService;
+import com.mypro.mypro.service.tasksService;
 
 import jakarta.servlet.http.HttpServletRequest;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,16 +27,39 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RequestMapping("/api2")
 public class staffController {
 
-    @GetMapping("/staff")
-    public String stf(){
-        return "SignUp";
+    @GetMapping("SignUp.html")
+    public String stf(HttpServletRequest request){
+        staff user = (staff) request.getSession().getAttribute("staff");
+        if (user != null) {
+            return "SignUp";
+        }
+        return"redirect: /api2/mngr";
+        
     }
+    @Autowired
+    private tasksService tskService;
+    @Autowired staffService stfService;
+    @GetMapping("/mngr")
+    public String mainPage(HttpServletRequest request, Model model) {
+        staff user = (staff) request.getSession().getAttribute("staff");
+        if (user == null) {
+            return "redirect:/api1/Welcome.html";
+        }
+        List<tasks> allTasks=tskService.showTasks();
+  
+        model.addAttribute("tasks", allTasks);
+        model.addAttribute("staff",stfService.showUsers());
+        
+        return "ManagerOverview";
+    }  
+   
+
     @Autowired 
     private staffService stfservice;
     @PostMapping("/saveUser")
     public String saveUser(@RequestParam String name, @RequestParam String username, @RequestParam String password,@RequestParam String email) {
         stfservice.saveUser(name, username,password, email);
-        return "redirect:/api2/login";
+        return"redirect:/api2/mngr";
     }
     
 
@@ -50,6 +78,11 @@ public class staffController {
     @GetMapping("Calendar.html")
     public String clndr(){
         return ("Calendar");
+    }
+    @GetMapping("/Welcome.html")
+    public String logOut(HttpServletRequest request){
+        request.getSession().invalidate();
+        return ("Welcome");
     }
     /* 
     @Autowired

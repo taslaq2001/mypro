@@ -19,7 +19,7 @@ public class staff {
 	private String username;
 	private String password;
 	private String email;
-
+	/* 
 	public void setId(int person_id){
 
 		this.person_id=person_id;
@@ -27,6 +27,7 @@ public class staff {
 	public int getId(){
 		return person_id;
 	}
+	*/
 	public void setName (String name){
 		this.name=name;
 	}
