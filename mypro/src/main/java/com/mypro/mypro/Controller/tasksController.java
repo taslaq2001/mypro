@@ -117,6 +117,162 @@ public class tasksController{
         return "redirect:/api1/tasks";
 
     }
+    @Autowired staffService stfService;
+    @PostMapping("/filter")
+    public String filter(@RequestParam(name="crtr1", required = false) String crtr1,@RequestParam(name="crtr2", required = false) String crtr2, Model model, HttpServletRequest request) {
+        model.addAttribute("staff",stfService.showUsers());
+        List<tasks> allTasks=tskService.showTasks();
+        List<tasks> filteredTasks=new ArrayList<>();
+        if (!crtr1.isEmpty() && !crtr2.isEmpty()){
+            int i = allTasks.size();
+            for (int j = 0; j<i; j++){
+                if(crtr1.equals("ANYONE")){
+                    if (crtr2.equals("completed")){
+                        if (allTasks.get(j).getAssigned_to()==null && allTasks.get(j).getStatus().equals(crtr2)){
+                            filteredTasks.add(allTasks.get(j));
+                        }
+                    }else if(crtr2.equals("All")){
+                        if (allTasks.get(j).getAssigned_to()==null){
+                            filteredTasks.add(allTasks.get(j));
+                        }
+                    }else{
+                        if (allTasks.get(j).getAssigned_to()==null && !allTasks.get(j).getStatus().equals("completed")){
+                            filteredTasks.add(allTasks.get(j));
+                        }
+                    }
+
+                }else if (crtr1.equals("All")){
+                    if(crtr2.equals("All")){
+                        filteredTasks=allTasks;
+                    }
+                    else if (crtr2.equals("completed")){
+                        if (allTasks.get(j).getStatus().equals(crtr2)){
+                            filteredTasks.add(allTasks.get(j));
+                        }
+
+
+                    }else{
+                        if (!allTasks.get(j).getStatus().equals("completed")){
+                            filteredTasks.add(allTasks.get(j));
+                        }
+                    }
+
+
+                }else{
+                    if (crtr2.equals("completed")){
+                        if (allTasks.get(j).getAssigned_to()!=null && allTasks.get(j).getAssigned_to().equals(crtr1) && allTasks.get(j).getStatus().equals(crtr2)){
+                            filteredTasks.add(allTasks.get(j));
+                        }
+                    }else if(crtr2.equals("All")){
+                        if (allTasks.get(j).getAssigned_to()!=null && allTasks.get(j).getAssigned_to().equals(crtr1)){
+                            filteredTasks.add(allTasks.get(j));
+                        }
+                    }else{
+                        if (allTasks.get(j).getAssigned_to()!=null && allTasks.get(j).getAssigned_to().equals(crtr1) && !allTasks.get(j).getStatus().equals("completed")){
+                            filteredTasks.add(allTasks.get(j));
+                        }
+
+                    }
+
+                }
+            }
+        }
+        if (crtr1.isEmpty() && !crtr2.isEmpty()){
+            if (crtr2.equals("completed")){
+                int i = allTasks.size();
+                for (int j = 0; j<i; j++){
+                    if (allTasks.get(j).getStatus().equals("completed")){
+                        filteredTasks.add(allTasks.get(j));
+                    }
+    
+                }
+            }else if (crtr2.equals("incomplete")){
+                int i = allTasks.size();
+                for (int j = 0; j<i; j++){
+                    if (!allTasks.get(j).getStatus().equals("completed")){
+                        filteredTasks.add(allTasks.get(j));
+                    }
+    
+                }
+            }else if (crtr2.equals("All")){
+                filteredTasks=allTasks;
+            }    
+        }
+
+        else if(crtr2.isEmpty()&& !crtr1.isEmpty()){
+            if(crtr1.equals("ANYONE")){
+                int i = allTasks.size();
+                for (int j = 0; j<i; j++){
+                    if (allTasks.get(j).getAssigned_to()==null){
+                        filteredTasks.add(allTasks.get(j));
+                    }
+                }
+            }
+            else if (crtr1.equals("All")){
+                filteredTasks=allTasks;
+            }else{
+                int i = allTasks.size();
+                for (int j = 0; j<i; j++){
+                    if (allTasks.get(j).getAssigned_to()!=null && allTasks.get(j).getAssigned_to().equals(crtr1)){
+                        filteredTasks.add(allTasks.get(j));
+                    }
+                }
+            }
+
+        }
+
+        
+        model.addAttribute("tasks", filteredTasks);
+        staff user = (staff) request.getSession().getAttribute("staff");
+        String currentUser=user.getUsername();
+        if (currentUser.startsWith("mngr")){
+            return "ManagerOverview";
+        }  
+            
+        return "ToDoList";
+    }
+
+    @PostMapping("/filter2")
+    public String filterb(@RequestParam String crtr2, Model model, HttpServletRequest request) {
+        staff user = (staff) request.getSession().getAttribute("staff");
+        String currentUser = user.getUsername();
+        List<tasks> allTasks=tskService.showTasks();
+        List<tasks> usersTasks=new ArrayList<>();
+        int i = allTasks.size();
+        for (int j=0; j<i;  j++){
+            if (allTasks.get(j).getAssigned_to()==null || allTasks.get(j).getAssigned_to().equals(currentUser)){
+                usersTasks.add(allTasks.get(j));
+            }
+        }
+        List<tasks> filteredTasks=new ArrayList<>();
+        if (crtr2.equals("completed")){
+            int k = usersTasks.size();
+            for (int j = 0; j<k; j++){
+                if (usersTasks.get(j).getStatus().equals("completed")){
+                    filteredTasks.add(usersTasks.get(j));
+                }
+
+            }
+        }else if (crtr2.equals("incomplete")){
+            int k = usersTasks.size();
+            for (int j = 0; j<k; j++){
+                if (!usersTasks.get(j).getStatus().equals("completed")){
+                    filteredTasks.add(usersTasks.get(j));
+                }
+
+            }
+        }else if (crtr2.equals("All")){
+            filteredTasks=usersTasks;
+        }    
+
+        model.addAttribute("tasks", filteredTasks);
+        if (currentUser.startsWith("mngr")){
+            return "ManagerOverview";
+        }  
+            
+        return "ToDoList";
+    }
+    
     
 
 
