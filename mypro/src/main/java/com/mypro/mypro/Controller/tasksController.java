@@ -4,9 +4,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-
+import com.mypro.mypro.repository.notificationsRepository;
 import com.mypro.mypro.repository.staffRepository;
 import com.mypro.mypro.repository.tasksRepository;
+import com.mypro.mypro.service.notificationsService;
 import com.mypro.mypro.service.staffService;
 import com.mypro.mypro.service.tasksService;
 
@@ -40,6 +41,8 @@ public class tasksController{
     private tasksService tskService;
     @Autowired
     private tasksRepository tskrepository;
+    @Autowired notificationsService ntfcService;
+    @Autowired notificationsRepository ntfcRepository;
 
     /* 
     @GetMapping("/tasks")
@@ -54,6 +57,26 @@ public class tasksController{
             return "redirect:/api1/Welcome.html";
         }
         String currentUser = user.getUsername();
+        List<notifications> notificsList=ntfcService.showNotifics();
+        List<notifications> usersNotifications=new ArrayList<>();
+        int k=notificsList.size();
+        if (currentUser.startsWith("mngr")){
+            for (int h=0;h<k;h++){
+                if(notificsList.get(h).getShow_to().equals("managers")){
+                    usersNotifications.add(notificsList.get(h));
+                }
+            }
+        }else{
+            for (int h=0;h<k;h++){
+                if(notificsList.get(h).getShow_to().equals("ANYONE")||notificsList.get(h).getShow_to().equals(currentUser) ){
+                    usersNotifications.add(notificsList.get(h));
+                }
+            }
+
+        }
+
+        
+        model.addAttribute("notifications", usersNotifications);
         List<tasks> allTasks=tskService.showTasks();
         List<tasks> usersTasks=new ArrayList<>();
         int i = allTasks.size();
@@ -64,6 +87,7 @@ public class tasksController{
 
         }
         model.addAttribute("tasks", usersTasks);
+        
         
         if (currentUser.startsWith("mngr")){
             return "ManagerOverview";
@@ -108,8 +132,10 @@ public class tasksController{
                 taskA.setCompleted_on(d);
             }
             tskrepository.save(taskA);
+            notifications newNotific=ntfcService.newNotif("change in the status of task : "+taskA.getTitle().toString(), "managers");
+            ntfcRepository.save(newNotific);
 
-        } 
+        }
         staff user = (staff) request.getSession().getAttribute("staff");
         if (user.getUsername().startsWith("mngr")){
             return "redirect:/api2/mngr";
@@ -221,10 +247,29 @@ public class tasksController{
 
         }
 
-        
-        model.addAttribute("tasks", filteredTasks);
         staff user = (staff) request.getSession().getAttribute("staff");
         String currentUser=user.getUsername();
+        model.addAttribute("tasks", filteredTasks);
+        List<notifications> notificsList=ntfcService.showNotifics();
+        List<notifications> usersNotifications=new ArrayList<>();
+        int k=notificsList.size();
+        if (currentUser.startsWith("mngr")){
+            for (int h=0;h<k;h++){
+                if(notificsList.get(h).getShow_to().equals("managers")){
+                    usersNotifications.add(notificsList.get(h));
+                }
+            }
+        }else{
+            for (int h=0;h<k;h++){
+                if(notificsList.get(h).getShow_to().equals("ANYONE")||notificsList.get(h).getShow_to().equals(currentUser) ){
+                    usersNotifications.add(notificsList.get(h));
+                }
+            }
+
+        }
+        
+        model.addAttribute("notifications", usersNotifications);
+
         if (currentUser.startsWith("mngr")){
             return "ManagerOverview";
         }  
@@ -266,6 +311,25 @@ public class tasksController{
         }    
 
         model.addAttribute("tasks", filteredTasks);
+        List<notifications> notificsList=ntfcService.showNotifics();
+        List<notifications> usersNotifications=new ArrayList<>();
+        int k=notificsList.size();
+        if (currentUser.startsWith("mngr")){
+            for (int h=0;h<k;h++){
+                if(notificsList.get(h).getShow_to().equals("managers")){
+                    usersNotifications.add(notificsList.get(h));
+                }
+            }
+        }else{
+            for (int h=0;h<k;h++){
+                if(notificsList.get(h).getShow_to().equals("ANYONE")||notificsList.get(h).getShow_to().equals(currentUser) ){
+                    usersNotifications.add(notificsList.get(h));
+                }
+            }
+
+        }
+        model.addAttribute("notifications", usersNotifications);
+
         if (currentUser.startsWith("mngr")){
             return "ManagerOverview";
         }  
@@ -283,6 +347,25 @@ public class tasksController{
         }
         String currentUser = user.getUsername();
         List<tasks> allTasks=tskService.showTasks();
+        List<notifications> notificsList=ntfcService.showNotifics();
+        List<notifications> usersNotifications=new ArrayList<>();
+        int l=notificsList.size();
+        if (currentUser.startsWith("mngr")){
+            for (int h=0;h<l;h++){
+                if(notificsList.get(h).getShow_to().equals("managers")){
+                    usersNotifications.add(notificsList.get(h));
+                }
+            }
+        }else{
+            for (int h=0;h<l;h++){
+                if(notificsList.get(h).getShow_to().equals("ANYONE")||notificsList.get(h).getShow_to().equals(currentUser) ){
+                    usersNotifications.add(notificsList.get(h));
+                }
+            }
+
+        }
+        model.addAttribute("notifications", usersNotifications);
+
         if (currentUser.startsWith("mngr")){
             List<tasks> allUsersTasks=new ArrayList<>();
             int k= allTasks.size();
@@ -293,6 +376,7 @@ public class tasksController{
             }
             model.addAttribute("tasks", allUsersTasks);
             model.addAttribute("staff",stfService.showUsers());
+
 
             return "ManagerOverview";
         }else{
@@ -378,7 +462,10 @@ public class tasksController{
             return "redirect:/api2/mngr";
         }
         return "redirect:/api1/tasks";
+        
         */
+        notifications newNotific=ntfcService.newNotif("new task has been added " + title, assigned_to);
+        ntfcRepository.save(newNotific);
         return "redirect:/api2/mngr";
 
     }

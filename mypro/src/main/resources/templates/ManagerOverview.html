@@ -359,17 +359,7 @@
             overflow: hidden;
         }
 
-        .dropdown-content p {
-            color: black;
-            padding: 12px 16px;
-            margin: auto;
-            text-align: left;
-            cursor: pointer;
-            font-size: medium;
-            transition: background-color 0.3s ease;
-        }
-
-        .dropdown-content p:hover {
+        .dropdown-content :hover {
             background-color: rgb(86, 130, 224);
             color: white;
             cursor: default;
@@ -381,12 +371,29 @@
             font-family: Verdana, Geneva, Tahoma, sans-serif;
             padding-left: 85px;
         }
+        .marker {
+            float: right;
+            background-color: red;
+            border-radius: 50%;
+            width: 15px;
+            height: 15px;
+
+        }
+        label {
+            white-space: pre;
+        }
+        .p3{
+            font-size: x-small;
+        }
+        .p4{
+            font-size: 0px;
+        }
 
 
     </style>
      
 </head>
-<body>
+<body onload="notNotified()">
     <div class ="bar">
         <a href="Welcome.html" class="a"><b>log out</b> </a>
         <a href="SignUp.html" class="a"><b>New user</b> </a>           
@@ -413,15 +420,24 @@
             <br><br><br>
             <p class="wr"> hello 2 </p>
         </div>
-        
-        <div class="c" onclick="toggleDropdown()">
-            <b>notifications</b>
-        </div>
-        <div class="dropdown-content" id="dropdown">
-            <p>task and date</p>
-            <hr width=90%>
-            <p>task 2 and date 2</p>
-        </div>
+        <form id="seenChange" action="/api3/notifications" method="post">
+            <div class="c" onclick="toggleDropdown(); notified();submitForm()">
+                <b>
+                    notifications
+                    <label> </label>
+                    <div class="marker" id="mrkr"></div>
+                </b>
+            </div>
+            <div class="dropdown-content" id="dropdown" >
+                <div th:each="notific : ${notifications}">
+                    <p class="p4" th:text="${notific.seen}"></p>
+                    <p th:text="${notific.content}"></p>
+                    <p class="p3" th:text="${notific.created_at}"></p3>
+                    <hr width=90%>
+                </div>
+            </div>
+        </form>
+
     </div> 
     <br><br><br><br>
     <form action="/api1/filter" method="post">
@@ -548,6 +564,37 @@
     </center>
 
     <script>
+
+        function notNotified(){
+
+            const red=document.getElementById('mrkr');
+            const elmnt=document.querySelector('.p4');
+            if (elmnt.innerText==='false'){
+                red.style.display='flex';
+            }else{
+                red.style.display='none';
+            }
+        }
+
+
+        function notified(){
+            const red=document.getElementById('mrkr');
+            if (red.style.display='flex'){
+                red.style.display='none';
+            }
+
+        }
+
+        function submitForm() {
+            const form = document.getElementById('seenChange');
+            const formData = new FormData(form);
+            fetch(form.action, {
+                method: form.method,
+                body: formData
+            }).then(response => response.json())  
+            .catch(error => console.error("Error:", error));
+        }
+
 
         function change(selectElement) {
             const row = selectElement.closest('tr'); 

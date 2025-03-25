@@ -2,8 +2,10 @@ package com.mypro.mypro.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mypro.mypro.model.notifications;
 import com.mypro.mypro.model.staff;
 import com.mypro.mypro.model.tasks;
+import com.mypro.mypro.service.notificationsService;
 import com.mypro.mypro.service.staffService;
 import com.mypro.mypro.service.tasksService;
 
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
+import com.mypro.mypro.Controller.*;
 
 
 @Controller
@@ -39,6 +42,8 @@ public class staffController {
     @Autowired
     private tasksService tskService;
     @Autowired staffService stfService;
+    @Autowired
+    private notificationsService ntfcService;
     @GetMapping("/mngr")
     public String mainPage(HttpServletRequest request, Model model) {
         staff user = (staff) request.getSession().getAttribute("staff");
@@ -49,6 +54,16 @@ public class staffController {
   
         model.addAttribute("tasks", allTasks);
         model.addAttribute("staff",stfService.showUsers());
+        List<notifications> notificsList=ntfcService.showNotifics();
+        List<notifications> usersNotifications=new ArrayList<>();
+        int l=notificsList.size();
+        for (int h=0;h<l;h++){
+            if(notificsList.get(h).getShow_to().equals("managers")){
+                usersNotifications.add(notificsList.get(h));
+            }
+        }
+        
+        model.addAttribute("notifications", usersNotifications);
         
         return "ManagerOverview";
     }  
@@ -71,7 +86,17 @@ public class staffController {
  */
 
     @GetMapping("/manage")
-    public String mng(){
+    public String mng(Model model){
+        List<notifications> notificsList=ntfcService.showNotifics();
+        List<notifications> usersNotifications=new ArrayList<>();
+        int l=notificsList.size();
+        for (int h=0;h<l;h++){
+            if(notificsList.get(h).getShow_to().equals("managers")){
+                usersNotifications.add(notificsList.get(h));
+            }
+        }
+        
+        model.addAttribute("notifications", usersNotifications);
         return "ManagerOverview";
     }
 

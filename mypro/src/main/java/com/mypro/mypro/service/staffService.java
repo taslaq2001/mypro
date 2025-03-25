@@ -70,6 +70,18 @@ public class staffService {
             return user;
 
     }
+
+    public List<staff>showManagers(){
+        List<staff> allStaff=stfrepository.findAll();
+        List<staff> managers=new ArrayList<>();
+        int i = allStaff.size();
+        for (int j=0; j<i;j++){
+            if(allStaff.get(j).getUsername().startsWith("mngr")){
+                managers.add(allStaff.get(j));
+            }
+        }
+        return managers;
+    }
     
 
 }
