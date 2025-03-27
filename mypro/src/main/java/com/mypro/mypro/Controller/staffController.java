@@ -50,9 +50,18 @@ public class staffController {
         if (user == null) {
             return "redirect:/api1/Welcome.html";
         }
+        String currentUser=user.getUsername();
         List<tasks> allTasks=tskService.showTasks();
+        int f=allTasks.size();
+        for (int g=0;g<f;g++){
+            if (allTasks.get(g).getPrivacy()!=null && allTasks.get(g).getPrivacy() && currentUser !=allTasks.get(g).getAssigned_by()){
+                allTasks.remove(allTasks.get(g));
+                f-=1;
+            }
+        }
   
         model.addAttribute("tasks", allTasks);
+
         model.addAttribute("staff",stfService.showUsers());
         List<notifications> notificsList=ntfcService.showNotifics();
         List<notifications> usersNotifications=new ArrayList<>();

@@ -467,6 +467,7 @@
             <th>Created on</th>
             <th>Completed on</th>
             <th>Assigned to</th>
+            <th>Privacy</th>
 
 
 
@@ -500,8 +501,9 @@
                 <span th:text="${task.completed_on.toString() == '1111-11-11' ? 'not completed' : task.completed_on}"></span>
             </td>
             <td th:text="${task.assigned_to}"></td>
-
-            
+            <td>
+                <span th:text="${task.privacy != null ? (task.privacy ? 'private' : 'not private') : 'not private'}"></span>
+            </td>
             <td class="dlt">
               <form th:action="@{/api1/delete/{id}(id=${task.task_id})}" method="post">
                 <input type="hidden" name="_method" value="delete"/>
@@ -564,7 +566,18 @@
     </center>
 
     <script>
-
+        /*
+        document.getElementById('btndlt').addEventListener('click',function(event) {
+            event.preventDefault();
+            var taskId = document.getElementById('deleteForm').action.split('/').pop();
+            fetch("/api1/delete{taskId}", {
+                method:'DELETE',
+                headers:{
+                    'Content-Type': 'application/json'
+                }
+            }).then(response=>response.text()).then(data=>{alert(data)});
+        });
+          */     
         function notNotified(){
 
             const red=document.getElementById('mrkr');

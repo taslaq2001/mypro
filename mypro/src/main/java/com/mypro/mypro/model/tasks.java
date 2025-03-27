@@ -26,6 +26,8 @@ public class tasks{
     private String status;
     private Date created_at;
 	private Date completed_on;
+    private String assigned_by;
+    private Boolean privacy = false;
 
     public void setTitle(String title){
         this.title=title;
@@ -48,6 +50,12 @@ public class tasks{
     public void setCompleted_on(Date completed_on){
         this.completed_on=completed_on;
     }
+    public void setPrivacy(Boolean privacy){
+        this.privacy=privacy;
+    }
+    public void setAssigned_by(String assigned_by){
+        this.assigned_by=assigned_by;
+    }
     public String getTitle(){
         return title;
     }
@@ -68,6 +76,12 @@ public class tasks{
     }
     public Date getCompleted_on(){
         return completed_on;
+    }
+    public Boolean getPrivacy(){
+        return privacy;
+    }
+    public String getAssigned_by(){
+        return assigned_by;
     }
 
 

@@ -18,7 +18,7 @@ import com.mypro.mypro.repository.tasksRepository;
 public class tasksService{
     @Autowired
     private tasksRepository tskrepository;
-    public tasks saveTask(String title , String describtion, String assigned_to, Date dueDate, String status, Date completed_on){
+    public tasks saveTask(String title , String describtion, String assigned_to, Date dueDate, String status, Date completed_on, Boolean privacy, String assigned_by){
         tasks task=new tasks();
         Date d=new Date(System.currentTimeMillis());
         task.setTitle(title);
@@ -28,6 +28,8 @@ public class tasksService{
         task.setStatus(status);
         task.setCreated_at(d);
         task.setCompleted_on(completed_on);
+        task.setAssigned_by(assigned_by);
+        task.setPrivacy(privacy);
         return tskrepository.save(task);
     }
     public List<tasks> showTasks(){

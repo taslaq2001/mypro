@@ -83,9 +83,13 @@ public class tasksController{
         for (int j=0; j<i;  j++){
             if (allTasks.get(j).getAssigned_to()==null || allTasks.get(j).getAssigned_to().equals(currentUser)){
                 usersTasks.add(allTasks.get(j));
+                if (allTasks.get(j).getPrivacy()!=null && allTasks.get(j).getPrivacy() && currentUser ==allTasks.get(j).getAssigned_by()){
+                    usersTasks.add(allTasks.get(j));
+                }
             }
 
         }
+
         model.addAttribute("tasks", usersTasks);
         
         
@@ -101,19 +105,29 @@ public class tasksController{
 
 
     @DeleteMapping("/delete/{id}")
-    public String deleteTask(@PathVariable("id") int id, RedirectAttributes redirectAttributes ,HttpServletRequest request) {
+    public String deleteTask(@PathVariable("id") int id ,HttpServletRequest request) {
         Optional<tasks> taskOptional = tskrepository.findById(id);
         if (taskOptional.isPresent()) {
             tasks taskA = taskOptional.get();
-            tskService.delete(taskA);
-            redirectAttributes.addFlashAttribute("message", "Task deleted successfully.");
-        } else {
-            redirectAttributes.addFlashAttribute("error", "Task not found.");
+            staff user = (staff) request.getSession().getAttribute("staff");
+            if (user.getUsername().startsWith("mngr")){
+                tskService.delete(taskA);
+                if (taskA.getAssigned_to()!=null && taskA.getAssigned_to()!=user.getUsername()){
+                    notifications newNotific=ntfcService.newNotif("one task has been deleted " + taskA.getTitle(), taskA.getAssigned_to());
+                    ntfcRepository.save(newNotific);
+                }
+                return "redirect:/api2/mngr";
+            }else{
+                if (taskA.getPrivacy()!=null && taskA.getPrivacy()){
+                    tskService.delete(taskA);
+                    return "redirect:/api1/tasks";
+                }/*else{
+                    redirectAttributes.addFlashAttribute("message","You can only delete your private tasks");
+                }*/
+            }
+            
         }
-        staff user = (staff) request.getSession().getAttribute("staff");
-        if (user.getUsername().startsWith("mngr")){
-            return "redirect:/api2/mngr";
-        }   
+  
         return "redirect:/api1/tasks";
     }
     @PostMapping("change1/{id}")
@@ -407,7 +421,15 @@ public class tasksController{
         
     }
     
-
+    @GetMapping("SignUp.html")
+    public String stf(HttpServletRequest request){
+        staff user = (staff) request.getSession().getAttribute("staff");
+        if (user != null) {
+            return "SignUp";
+        }
+        return"redirect: /api2/mngr";
+        
+    }
     
     
     
@@ -451,10 +473,12 @@ public class tasksController{
         */
 
     @PostMapping("add_tasks")
-    public String saveTasks( @RequestParam String title , @RequestParam String describtion, @RequestParam String assigned_to,@RequestParam Date dueDate) {
+    public String saveTasks( @RequestParam String title , @RequestParam String describtion, @RequestParam String assigned_to,@RequestParam Date dueDate, HttpServletRequest request) {
         Date completed_on=java.sql.Date.valueOf("1111-11-11");
         String status="open";
-        tskService.saveTask(title, describtion, assigned_to, dueDate, status, completed_on);
+        staff user = (staff) request.getSession().getAttribute("staff");
+        String currentUser=user.getUsername();
+        tskService.saveTask(title, describtion, assigned_to, dueDate, status, completed_on, false, currentUser);
         tskService.showTasks();
         /* 
         staff user = (staff) request.getSession().getAttribute("staff");
@@ -470,11 +494,13 @@ public class tasksController{
 
     }
     @PostMapping("post_tasks")
-    public String postTasks(@RequestParam String title , @RequestParam String describtion,@RequestParam Date dueDate) {
+    public String postTasks(@RequestParam String title , @RequestParam String describtion,@RequestParam Date dueDate, HttpServletRequest request) {
         Date completed_on=java.sql.Date.valueOf("1111-11-11");
         String status="open";
         String title1=" TO ANYONE   "+title;
-        tskService.saveTask(title1, describtion, null, dueDate, status, completed_on);
+        staff user = (staff) request.getSession().getAttribute("staff");
+        String currentUser=user.getUsername();
+        tskService.saveTask(title1, describtion, null, dueDate, status, completed_on, false, currentUser);
         tskService.showTasks();
         /* 
         staff user = (staff) request.getSession().getAttribute("staff");
@@ -493,7 +519,7 @@ public class tasksController{
         staff user = (staff) request.getSession().getAttribute("staff");
         String assigned_to=user.getUsername();
         String status="open";
-        tskService.saveTask(title, describtion, assigned_to, dueDate, status, completed_on);
+        tskService.saveTask(title, describtion, assigned_to, dueDate, status, completed_on, true, assigned_to);
         tskService.showTasks();
         
         if (user.getUsername().startsWith("mngr")){

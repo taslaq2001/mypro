@@ -437,6 +437,10 @@
                 <option value="All">All</option>
             </select>
             <button class="okseccond" type="submit">ok</button>
+            <label> </label>
+            <label> </label>
+            <label> </label>
+            you can only delete your own private tasks
         </p>
 
     </form>
@@ -448,6 +452,7 @@
             <th>Status</th>
             <th>Created on</th>
             <th>Completed on</th>
+            <th>Privacy</th>
 
 
         </tr>
@@ -476,14 +481,16 @@
             <td>
                 <span th:text="${task.completed_on.toString() == '1111-11-11' ? 'not completed' : task.completed_on}"></span>
             </td>
-            <!--
+            <td>
+                <span th:text="${task.privacy != null ? (task.privacy ? 'private' : 'not private') : 'not private'}"></span>
+            </td>
             <td class="dlt">
               <form th:action="@{/api1/delete/{id}(id=${task.task_id})}" method="post">
                 <input type="hidden" name="_method" value="delete"/>
                 <button type="submit" class="delete">Delete</button>
               </form>
             </td>
-            -->
+            
 
           </tr>
     </table>
