@@ -65,6 +65,11 @@
             cursor: pointer; 
             text-decoration: none; 
         }
+        .error{
+            color: red;
+            font-weight: bold;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        }
     </style>
      
 </head>
@@ -77,6 +82,9 @@
     <br>
     <p class ="p2"> Sigin in with your username and password</p>
     <br>
+    <div th:if="${error}" class="error">
+        <p th:text="${error}"></p>
+    </div> 
     <form action= "/login" method = "POST">
     <p><input type="text" placeholder="Username" name="username"required cols ="35" rows=1 ></p>
     <p><input type="password" placeholder="Password" name="password"required cols ="35" rows=1 ></p>

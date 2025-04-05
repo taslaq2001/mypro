@@ -16,7 +16,27 @@ public class chats {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int chat_id;
-	private int person1;
-	private int person2;
+    private Integer chat_id;
+	private String first_person;
+	private String second_person;
+
+    public void setFirst_person( String first_person){
+        this.first_person=first_person;
+    }
+
+    public void setSecond_person(String second_person){
+        this.second_person=second_person;
+    }
+
+    public String getFirst_person(){
+        return first_person;
+    }
+
+    public String getSecond_person(){
+        return second_person;
+    }
+
+    public Integer getChat_id(){
+        return chat_id;
+    }
 }

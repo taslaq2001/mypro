@@ -40,6 +40,7 @@ public class notificationsService {
             if (status==true && d.before(dA)){
                 Notifics.remove(notific);
                 ntfcrepository.delete(notific);
+                i=-1;
             }
         }
         Collections.reverse(Notifics);

@@ -4,9 +4,13 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.mypro.mypro.repository.chatsRepository;
+import com.mypro.mypro.repository.messagesRepository;
 import com.mypro.mypro.repository.notificationsRepository;
 import com.mypro.mypro.repository.staffRepository;
 import com.mypro.mypro.repository.tasksRepository;
+import com.mypro.mypro.service.chatsService;
+import com.mypro.mypro.service.messagesService;
 import com.mypro.mypro.service.notificationsService;
 import com.mypro.mypro.service.staffService;
 import com.mypro.mypro.service.tasksService;
@@ -17,8 +21,10 @@ import com.mypro.mypro.model.*;
 import java.sql.Date;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -43,6 +49,10 @@ public class tasksController{
     private tasksRepository tskrepository;
     @Autowired notificationsService ntfcService;
     @Autowired notificationsRepository ntfcRepository;
+    @Autowired chatsRepository chtRepository;
+    @Autowired chatsService chtService;
+    @Autowired messagesRepository msgRepository;
+    @Autowired messagesService mesgService;
 
     /* 
     @GetMapping("/tasks")
@@ -62,7 +72,7 @@ public class tasksController{
         int k=notificsList.size();
         if (currentUser.startsWith("mngr")){
             for (int h=0;h<k;h++){
-                if(notificsList.get(h).getShow_to().equals("managers")){
+                if(notificsList.get(h).getShow_to().equals("managers")||notificsList.get(h).getShow_to().equals("ANYONE")||notificsList.get(h).getShow_to().equals(currentUser)){
                     usersNotifications.add(notificsList.get(h));
                 }
             }
@@ -74,6 +84,7 @@ public class tasksController{
             }
 
         }
+  
 
         
         model.addAttribute("notifications", usersNotifications);
@@ -89,8 +100,27 @@ public class tasksController{
             }
 
         }
+        List<messages> msgs=mesgService.showMessages();
+        List<messages> usersMsgs=new ArrayList<>();
+        int p=msgs.size();
+        for (int q=0;q<p;q++){
+            if(msgs.get(q).getSender().equals(currentUser)||msgs.get(q).getReceiver().equals(currentUser)){
+                usersMsgs.add(msgs.get(q));
+            }
+        }
+        List<chats> chts=chtService.showChats();
+        List<chats> usersChats=new ArrayList<>();
+        int m=chts.size();
+        for (int n=0;n<m;n++){
+            if(chts.get(n).getFirst_person().equals(currentUser)||chts.get(n).getSecond_person().equals(currentUser)){
+                usersChats.add(chts.get(n));
+            }
+        }
+        model.addAttribute("chats", usersChats);
+        model.addAttribute("messages", usersMsgs);
 
         model.addAttribute("tasks", usersTasks);
+        model.addAttribute("currentUser", currentUser);
         
         
         if (currentUser.startsWith("mngr")){
@@ -283,6 +313,43 @@ public class tasksController{
         }
         
         model.addAttribute("notifications", usersNotifications);
+        List<chats> chts=chtService.showChats();
+        List<chats> usersChats=new ArrayList<>();
+        int m=chts.size();
+        for (int n=0;n<m;n++){
+            if(chts.get(n).getFirst_person().equals(currentUser)||chts.get(n).getSecond_person().equals(currentUser)){
+                usersChats.add(chts.get(n));
+            }
+        }
+        model.addAttribute("chats", usersChats);
+
+        List<messages> msgs=mesgService.showMessages();
+        List<messages> usersMsgs=new ArrayList<>();
+        int p=msgs.size();
+        for (int q=0;q<p;q++){
+            if(msgs.get(q).getSender().equals(currentUser)||msgs.get(q).getReceiver().equals(currentUser)){
+                usersMsgs.add(msgs.get(q));
+            }
+        }
+        Set<Integer> ids=new HashSet<>();
+        
+        for (int y=0; y<usersMsgs.size();y++){
+            Integer x=usersMsgs.get(y).getChat_id();
+            
+            ids.add(x);
+
+            
+        }
+        for ( Integer i : ids){
+            
+            Set<messages> msgsWids=new HashSet<>();
+            for (messages msg : usersMsgs){
+                if (msg.getChat_id()==i){
+                    msgsWids.add(msg);
+                }
+            }
+            model.addAttribute("msgs"+i, msgsWids);
+        }
 
         if (currentUser.startsWith("mngr")){
             return "ManagerOverview";
@@ -473,35 +540,36 @@ public class tasksController{
         */
 
     @PostMapping("add_tasks")
-    public String saveTasks( @RequestParam String title , @RequestParam String describtion, @RequestParam String assigned_to,@RequestParam Date dueDate, HttpServletRequest request) {
-        Date completed_on=java.sql.Date.valueOf("1111-11-11");
-        String status="open";
-        staff user = (staff) request.getSession().getAttribute("staff");
-        String currentUser=user.getUsername();
-        tskService.saveTask(title, describtion, assigned_to, dueDate, status, completed_on, false, currentUser);
-        tskService.showTasks();
-        /* 
-        staff user = (staff) request.getSession().getAttribute("staff");
-        if (user.getUsername().startsWith("mngr")){
-            return "redirect:/api2/mngr";
-        }
-        return "redirect:/api1/tasks";
+    public String saveTasks( @RequestParam String title , @RequestParam String describtion, @RequestParam String assigned_to,@RequestParam String dueDate, HttpServletRequest request,  RedirectAttributes redirectAttributes) {
+        try{
+            Date completed_on=java.sql.Date.valueOf("1111-11-11");
+            Date parsedDueDate = java.sql.Date.valueOf(dueDate);
+            String status="open";
+            staff user = (staff) request.getSession().getAttribute("staff");
+            String currentUser=user.getUsername();
+            tskService.saveTask(title, describtion, assigned_to, parsedDueDate, status, completed_on, false, currentUser);
+            tskService.showTasks();
+            /* 
+            staff user = (staff) request.getSession().getAttribute("staff");
+            if (user.getUsername().startsWith("mngr")){
+                return "redirect:/api2/mngr";
+            }
+            return "redirect:/api1/tasks";
+            
+            */
+            notifications newNotific=ntfcService.newNotif("new task has been added " + title, assigned_to);
+            ntfcRepository.save(newNotific);
         
-        */
-        notifications newNotific=ntfcService.newNotif("new task has been added " + title, assigned_to);
-        ntfcRepository.save(newNotific);
+
+        }catch(Exception e){
+            redirectAttributes.addFlashAttribute("error2", "Task could not be saved. Please try again. All fields must be filled");
+        }
         return "redirect:/api2/mngr";
 
     }
     @PostMapping("post_tasks")
-    public String postTasks(@RequestParam String title , @RequestParam String describtion,@RequestParam Date dueDate, HttpServletRequest request) {
-        Date completed_on=java.sql.Date.valueOf("1111-11-11");
-        String status="open";
-        String title1=" TO ANYONE   "+title;
-        staff user = (staff) request.getSession().getAttribute("staff");
-        String currentUser=user.getUsername();
-        tskService.saveTask(title1, describtion, null, dueDate, status, completed_on, false, currentUser);
-        tskService.showTasks();
+    public String postTasks(@RequestParam String title , @RequestParam String describtion,@RequestParam String dueDate, HttpServletRequest request, RedirectAttributes redirectAttributes) {
+
         /* 
         staff user = (staff) request.getSession().getAttribute("staff");
         if (user.getUsername().startsWith("mngr")){
@@ -509,24 +577,54 @@ public class tasksController{
         }
         return "redirect:/api1/tasks";
         */
+        try{
+            Date completed_on=java.sql.Date.valueOf("1111-11-11");
+            Date parsedDueDate = java.sql.Date.valueOf(dueDate);
+            String status="open";
+            String title1=" TO ANYONE   "+title;
+            staff user = (staff) request.getSession().getAttribute("staff");
+            String currentUser=user.getUsername();
+            tskService.saveTask(title1, describtion, null, parsedDueDate, status, completed_on, false, currentUser);
+            tskService.showTasks();
+            
+            notifications newNotific=ntfcService.newNotif("new task has been added " + title, "ANYONE");
+            ntfcRepository.save(newNotific);
+
+        }catch(Exception e){
+            redirectAttributes.addFlashAttribute("error2", "Task could not be saved. Please try again. All fields must be filled");
+        }
         return "redirect:/api2/mngr";
 
     }
 
+    
     @PostMapping("add_ownTasks")
-    public String saveOwnTasks(HttpServletRequest request, @RequestParam String title , @RequestParam String describtion,@RequestParam Date dueDate) {
-        Date completed_on=java.sql.Date.valueOf("1111-11-11");
+    public String saveOwnTasks(HttpServletRequest request, @RequestParam String title , @RequestParam String describtion,@RequestParam String dueDate, RedirectAttributes redirectAttributes) {
         staff user = (staff) request.getSession().getAttribute("staff");
-        String assigned_to=user.getUsername();
-        String status="open";
-        tskService.saveTask(title, describtion, assigned_to, dueDate, status, completed_on, true, assigned_to);
-        tskService.showTasks();
-        
+
+        try{
+            Date parsedDueDate = java.sql.Date.valueOf(dueDate);
+            Date completed_on=java.sql.Date.valueOf("1111-11-11");
+            String assigned_to=user.getUsername();
+            String status="open";
+            tskService.saveTask(title, describtion, assigned_to, parsedDueDate, status, completed_on, true, assigned_to);
+            tskService.showTasks();
+            
+
+        }
+
+
+        catch(Exception e){
+            redirectAttributes.addFlashAttribute("error2", "Task could not be saved. Please try again. All fields must be filled");
+
+            
+        }
         if (user.getUsername().startsWith("mngr")){
             return "redirect:/api2/mngr";
         }
         return "redirect:/api1/tasks";
 
+        
     }
     
     @GetMapping("Calendar.html")

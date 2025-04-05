@@ -38,7 +38,7 @@ public class notificationsController {
         int i=notificsList.size();
         if (currentUser.startsWith("mngr")){
             for (int h=0;h<i;h++){
-                if(notificsList.get(h).getShow_to().equals("managers")){
+                if(notificsList.get(h).getShow_to().equals("managers")||notificsList.get(h).getShow_to().equals(currentUser)){
                     usersNotifications.add(notificsList.get(h));
                 }
             }

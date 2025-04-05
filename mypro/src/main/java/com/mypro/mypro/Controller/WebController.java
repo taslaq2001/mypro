@@ -39,9 +39,11 @@ public class WebController {
     @Autowired
     private staffService stfservice;
     @PostMapping("/login")
-    public String logIn(@RequestParam String username,@RequestParam String password, HttpServletRequest request) {
-        try {
+    public String logIn(@RequestParam String username,@RequestParam String password, HttpServletRequest request, Model model) {
+  
             staff user = stfservice.validateLogin(username, password, request);
+            
+            
             if (user!=null){
                 request.getSession().setAttribute("staff",user);
                 if (user.getUsername().startsWith("mngr")){
@@ -49,11 +51,11 @@ public class WebController {
                 }else{
                     return "redirect:/api1/tasks";
                 }
+            }else{
+                model.addAttribute("error", "username or password incorrect");
+                return "Welcome.html";
             }
-        }catch (Exception e) {
-            return "Welcome";
-        }
-        return "Welcome"; 
+
     }
 
 

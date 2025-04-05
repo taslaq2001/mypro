@@ -148,11 +148,14 @@
             text-decoration: none;
         }
         #chat-side{  
-            top: 60px;
-            position: fixed;
+
+            top: 52px;
+            position:absolute;
+            
             right:0;
             height: 100%;
             width:0;
+            display: none; 
             background-color: white;
             color: black;
             overflow: hidden;
@@ -219,28 +222,8 @@
         #AddList{
             display: none;
         }
-        #chat-side{  
-            top: 60px;
-            position: fixed;
-            right:0;
-            height: 100%;
-            width:0;
-            background-color: white;
-            color: black;
-            overflow: hidden;
-            border-radius: 5px; 
-            z-index: 1;
 
-        }
-        .indiv{
-            padding: 5px;
-            font-family: Arial, Helvetica, sans-serif;
-        }
-        .indiv:hover {
-            background-color: rgb(86, 130, 224);
-            color: white;
-            cursor: pointer;
-        }
+
         .indivchat{
             top: 60px;
             position: fixed;
@@ -255,18 +238,56 @@
         .indivchat.active{
             width:30%;
         }
-        .wr{
-            color: black;
-            font-family: Arial, Helvetica, sans-serif;
-            display: inline-block;
+
+        .side-content {
+            width: 30%;
+            height: 100vh; /* Full height */
+            overflow-y: auto; /* Scrollable if messages exceed the height */
+            background: #f1f1f1; /* Light background */
+            padding: 10px;
+        }
+
+        .indiv {
+            cursor: pointer;
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+            background: white;
+            transition: 0.3s;
+        }
+
+        .indiv:hover {
+            background: #ddd;
+        }
+
+        .messages {
+            display: none; /* Initially hidden */
+            margin-top: 10px;
+            padding: 5px;
+            background: #e9ecef;
+            width: 100%;
+            max-height: 300px; /* Set a max height */
+            overflow-y: auto; /* Enables scrolling inside this div */
+            overflow-x: hidden; /* Prevents horizontal scrolling */
             border-radius: 5px;
-            max-width: 60%;
-            word-wrap: break-word; 
-            margin: 5px;
-            float: left;
-            padding: 4px 4px;
-            text-align: left;
-            background-color: rgb(187, 179, 179);
+            position: relative; /* Ensures it doesn’t affect the main page */
+            flex-direction: column;
+        }
+
+        .wr {
+            background: white;
+            padding: 8px;
+            border-radius: 5px;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+            margin: 5px 0;
+        }
+        .wrb{
+            background: white;
+            padding: 8px;
+            border-radius: 5px;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+            margin: 5px 0;
+            float: right;
+
         }
         .x{
             display: block;
@@ -282,10 +303,7 @@
             cursor: pointer;
         }
 
-        .side-content p {
-            padding: 10px;
-            font-size: 16px;
-        }
+
         input {
             margin-left: 20px; 
             padding: 5px 10px;
@@ -311,7 +329,7 @@
             display: none; 
             position:absolute;
             right:5px;
-            top:60px;
+            top:52px;
             background-color: white;
             min-width: 200px; 
             box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2); 
@@ -319,8 +337,6 @@
             border-radius: 5px; 
             overflow: hidden;
         }
-
-
 
         .dropdown-content :hover {
             background-color: rgb(86, 130, 224);
@@ -376,6 +392,12 @@
         .p4{
             font-size: 0px;
         }
+        .error{
+            color: red;
+            font-weight: bold;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            padding-left: 85px;
+        }
 
 
     </style>
@@ -385,27 +407,38 @@
     <div class ="bar">
         <a href="Welcome.html" class="a"><b>log out</b> </a>           
         <div class="b" id="chat-side-button" onclick="side()">
-            <b>chats</b>
+            <b>messages</b>
         </div>
-        <div class="side-content"id="chat-side">
-            <div class="indiv" id="1" onclick="show(10)">
-                name 1
-            </div>   
-            <hr width="90%">         
-            <div class="indiv" id ="2"onclick="show(20)">
-                name 2
+  
+
+
+        <div class="side-content" id="chat-side">
+            <form action="/api4/chatting2">
+                <p class="filtering">Create new chat to:
+                <br>
+                <select class="username" name="receiver">
+                    <option value="" hidden selected>Username</option>
+                    <option th:each="user : ${staff}" th:value="${user.username}" th:text="${user.username}"></option>
+                </select>
+                <button class="okseccond" type="submit">ok</button>
+                </p>
+            </form>
+            <div class="indiv" data-chat-id="${chat.chat_id}" th:each="chat : ${chats}" onclick="toggleMessages(this)">
+                <form  th:action="@{/api5/send/{id}/{receiver}(id=${chat.chat_id}, receiver=${chat.second_person})}" method="post"  >
+
+                    <p th:text="${chat.second_person eq currentUser ?   chat.first_person : chat.second_person }"></p>
+                <div class="messages">
+                    <div th:each="msg : ${messages}">
+                        <span th:if="${msg.chat_id eq chat.chat_id}">
+                            <p th:text="${msg.message}" th:class="${msg.sender eq chat.second_person ? 'wrb' : 'wr'}"></p>
+                        </span>
+                        <br>  
+                    </div>
+                    <p><input type="text"  placeholder="type..." name="messageText" rows="1"></p>
+                    <button id="sending"class="okseccond" type="submit" >send</button>
+                </div>
+                </form>      
             </div>
-            <hr width="90%">
-        </div>
-        <div class="indivchat" id="10">
-            <p class ="x" onclick="exit()">Exit chat</p>
-            <br><br><br>
-            <p class="wr"> hello 1 </p>
-        </div>
-        <div class="indivchat" id="20">
-            <p class ="x" onclick="exit()">Exit chat</p>
-            <br><br><br>
-            <p class="wr"> hello 2 </p>
         </div>
         
         <form id="seenChange" action="/api3/notifications" method="post">
@@ -416,6 +449,7 @@
                     <div class="marker" id="mrkr"></div>
                 </b>
             </div>
+        </form>
             <div class="dropdown-content" id="dropdown" >
                 <div th:each="notific : ${notifications}">
                     <p class="p4" th:text="${notific.seen}"></p>
@@ -424,7 +458,7 @@
                     <hr width=90%>
                 </div>
             </div>
-        </form>
+        
 
     </div> 
     <br><br><br><br>
@@ -444,6 +478,9 @@
         </p>
 
     </form>
+    <div th:if="${error2}" class="error">
+        <p th:text="${error2}"></p>
+    </div>
     <table class = "table">
         <tr>
             <th>Title</th>
@@ -504,6 +541,9 @@
             <button id="AddTask" class ="add" onclick="Add()">Add a new Task</button>
             <div id="AddList" class ="List">
                 <form action= "/api1/add_ownTasks" method = "POST">
+                    <div th:if="${error2}" class="error">
+                        <p th:text="${error2}"></p>
+                    </div>
                     <p><input type="text" placeholder="Title" name="title" rows=1 ></p>
                     <p><input type="text" placeholder="Describtion" name="describtion" rows=1 ></p>
                     <p>choose the due date</p>
@@ -531,6 +571,20 @@
     </center>
 
     <script>
+        function scrollToBottom(chatElement) {
+            const messagesDiv = chatElement.querySelector('.messages');
+            messagesDiv.scrollTop = messagesDiv.scrollHeight; // Scrolls inside the div
+        }
+        function toggleMessages(chatElement) {
+            const messagesDiv = chatElement.querySelector('.messages');
+            if (messagesDiv.style.display === 'none' || messagesDiv.style.display === '') {
+                messagesDiv.style.display = 'flex';
+                messagesDiv.scrollTop = messagesDiv.scrollHeight; 
+            }else{
+                messagesDiv.style.display = 'none';
+            }
+            document.body.style.overflow = messagesDiv.style.display === 'flex' ? 'hidden' : 'auto';
+        }
 
         function notNotified(){
 
@@ -587,8 +641,10 @@
             const chatSide=document.getElementById("chat-side");
             if (chatSide.style.width==="30%"){
                 chatSide.style.width=0;
+                chatSide.style.display='none';
             }else{
                 chatSide.style.width="30%";
+                chatSide.style.display='block';
             }
         }
         function show(id){
