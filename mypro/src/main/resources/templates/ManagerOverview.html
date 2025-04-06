@@ -154,9 +154,9 @@
 
             top: 52px;
             position:absolute;
-
+            overflow-y: auto;
             right:0;
-            height: 100%;
+            height: auto;
             width:0;
             display: none; 
             background-color: white;
@@ -230,7 +230,25 @@
             font-family:'Trebuchet MS';
             cursor: pointer;
         }
+        .deleteA{
+            background-color:rgb(168, 14, 6);
+            border:none;
+            border-radius: 5px;
+            color: rgb(250, 249, 253);
+            padding: 4px 2px;
+            text-align: center;
+            font-size: 1ßpx;
+            font-family:'Trebuchet MS';
+            cursor: pointer;
+            float: right;
+        }
         .delete:hover {
+            background-color: white; 
+            color: rgb(86, 130, 224); 
+            cursor: pointer; 
+            text-decoration: none; 
+        }
+        .deleteA:hover {
             background-color: white; 
             color: rgb(86, 130, 224); 
             cursor: pointer; 
@@ -301,10 +319,11 @@
 
         .messages {
             display: none; /* Initially hidden */
-            margin-top: 10px;
-            padding: 5px;
+           
+           
             background: #e9ecef;
             width: 100%;
+            height:auto;
             max-height: 300px; /* Set a max height */
             overflow-y: auto; /* Enables scrolling inside this div */
             overflow-x: hidden; /* Prevents horizontal scrolling */
@@ -318,7 +337,7 @@
             padding: 8px;
             border-radius: 5px;
             box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-            margin: 5px 0;
+            float: left;
         }
         .wrb{
             background: white;
@@ -386,6 +405,9 @@
             color: white;
             cursor: default;
         }
+        .dropdown-content {
+            text-align: center;
+        }
         .filtering{
             color:  #146096;
             font-size:large;
@@ -442,24 +464,39 @@
                 </select>
                 <button class="okseccond" type="submit">ok</button>
                 </p>
+                <div class="deleteA" onclick="toggleMessagesb()">close chat windows </div>
             </form>
+            <br><br>
             <div class="indiv" data-chat-id="${chat.chat_id}" th:each="chat : ${chats}" onclick="toggleMessages(this)">
-                <form  th:action="@{/api5/send/{id}/{receiver}(id=${chat.chat_id}, receiver=${chat.second_person})}" method="post"  >
+                
+                
+                <form th:action="@{/api1/delete1/{id}(id=${chat.chat_id})}" method="post">
+                    <input type="hidden" name="_method" value="delete"/>
+                    <button type="submit" class="deleteA">-</button>
+                  </form>
+                  
+                
+                    <p th:text="${chat.second_person eq currentUser ?   chat.first_person : chat.second_person }" >
+                        <label>    </label>
 
-                    <p th:text="${chat.second_person eq currentUser ?   chat.first_person : chat.second_person }"></p>
-                <div class="messages">
+
+                    </p>
+                <form  th:action="@{/api5/send/{id}/{fperson}/{sperson}(id=${chat.chat_id}, fperson=${chat.first_person}, sperson=${chat.second_person})}" method="post"  >
+                <div class="messages" id="msgsid">
                     <div th:each="msg : ${messages}">
                         <span th:if="${msg.chat_id eq chat.chat_id}">
-                            <p th:text="${msg.message}" th:class="${msg.sender eq chat.second_person ? 'wrb' : 'wr'}"></p>
+                            <p th:text="${msg.message}" th:class="${msg.sender eq currentUser ? 'wr' : 'wrb'}"></p>
                         </span>
-                        <br>  
+                        
                     </div>
                     <p><input type="text"  placeholder="type..." name="messageText" rows="1"></p>
                     <button id="sending"class="okseccond" type="submit" >send</button>
                 </div>
-                </form>      
+                </form> 
             </div>
+                     
         </div>
+        
 
         <form id="seenChange" action="/api3/notifications" method="post">
             <div class="c" onclick="toggleDropdown(); notified();submitForm()">
@@ -472,7 +509,9 @@
             <div class="dropdown-content" id="dropdown" >
                 <div th:each="notific : ${notifications}">
                     <p class="p4" th:text="${notific.seen}"></p>
+                    <label>   </label>
                     <p th:text="${notific.content}"></p>
+                    <label>   </label>
                     <p class="p3" th:text="${notific.created_at}"></p3>
                     <hr width=90%>
                 </div>
@@ -689,11 +728,17 @@
             if (messagesDiv.style.display === 'none' || messagesDiv.style.display === '') {
                 messagesDiv.style.display = 'flex';
                 messagesDiv.scrollTop = messagesDiv.scrollHeight; 
-            }else{
-                messagesDiv.style.display = 'none';
             }
             document.body.style.overflow = messagesDiv.style.display === 'flex' ? 'hidden' : 'auto';
         }
+
+        function toggleMessagesb(){
+            document.querySelectorAll('.messages').forEach(div => {
+                div.style.display = 'none';
+            });
+        }
+
+
 
         function toggleDropdown(){
             const dropdown=document.getElementById('dropdown');

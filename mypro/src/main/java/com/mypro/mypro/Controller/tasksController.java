@@ -108,6 +108,7 @@ public class tasksController{
                 usersMsgs.add(msgs.get(q));
             }
         }
+        model.addAttribute("messages", usersMsgs);
         List<chats> chts=chtService.showChats();
         List<chats> usersChats=new ArrayList<>();
         int m=chts.size();
@@ -117,10 +118,10 @@ public class tasksController{
             }
         }
         model.addAttribute("chats", usersChats);
-        model.addAttribute("messages", usersMsgs);
 
         model.addAttribute("tasks", usersTasks);
         model.addAttribute("currentUser", currentUser);
+        model.addAttribute("staff",stfService.showUsers());
         
         
         if (currentUser.startsWith("mngr")){
@@ -152,6 +153,38 @@ public class tasksController{
                     tskService.delete(taskA);
                     return "redirect:/api1/tasks";
                 }/*else{
+                    redirectAttributes.addFlashAttribute("message","You can only delete your private tasks");
+                }*/
+            }
+            
+        }
+  
+        return "redirect:/api1/tasks";
+    }
+
+    @DeleteMapping("/delete1/{id}")
+    public String deleteChat(@PathVariable("id") int id ,HttpServletRequest request) {
+        Optional<chats> cht = chtRepository.findById(id);
+        if (cht.isPresent()) {
+            chats chtA = cht.get();
+            staff user = (staff) request.getSession().getAttribute("staff");
+            List<messages> msgs=mesgService.showMessages();
+            for(messages msg : msgs ){
+                if(msg.getChat_id()==id){
+                    msgRepository.delete(msg);
+                }
+            }
+            chtService.deleteChat(chtA);
+
+            if (user.getUsername().startsWith("mngr")){
+                
+    
+                return "redirect:/api2/mngr";
+            }else{
+                
+                    
+                    return "redirect:/api1/tasks";
+                /*else{
                     redirectAttributes.addFlashAttribute("message","You can only delete your private tasks");
                 }*/
             }

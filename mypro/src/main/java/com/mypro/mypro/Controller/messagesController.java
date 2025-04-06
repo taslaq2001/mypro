@@ -33,11 +33,19 @@ class messagesController {
     @Autowired messagesRepository msgRepository;
     @Autowired messagesService msgService;
   
-    @PostMapping("/send/{id}/{receiver}")    
-    public String sendMessage(@PathVariable("id") Integer id, @PathVariable("receiver") String receiver, @RequestParam("messageText") String messageText, HttpServletRequest request, Model model) {
+    @PostMapping("/send/{id}/{fperson}/{sperson}")   
+    public String sendMessage(@PathVariable("id") Integer id, @PathVariable("fperson") String fperson,@PathVariable("sperson") String sperson, @RequestParam("messageText") String messageText, HttpServletRequest request, Model model) {
         staff user = (staff) request.getSession().getAttribute("staff");
         String currentUser = user.getUsername();
-        msgService.newMessage(id, currentUser, receiver, messageText);
+        if (fperson.equals(currentUser)){
+            String receiver= sperson;
+            msgService.newMessage(id, currentUser, receiver, messageText);
+
+        }else{
+            String receiver= fperson;
+            msgService.newMessage(id, currentUser, receiver, messageText);
+
+        }
         List<messages> msgs=msgService.showMessages();
         List<messages> usersMsgs=new ArrayList<>();
         int p=msgs.size();
@@ -56,11 +64,19 @@ class messagesController {
              
     }
     
-    @GetMapping("/send/{id}/{receiver}")    
-    public String sendMessage2(@PathVariable("id") Integer id, @PathVariable("receiver") String receiver, @RequestParam("messageText") String messageText, HttpServletRequest request, Model model) {
+    @GetMapping("/send/{id}/{fperson}/{sperson}")    
+    public String sendMessage2(@PathVariable("id") Integer id, @PathVariable("fperson") String fperson,@PathVariable("sperson") String sperson, @RequestParam("messageText") String messageText, HttpServletRequest request, Model model) {
         staff user = (staff) request.getSession().getAttribute("staff");
         String currentUser = user.getUsername();
-        msgService.newMessage(id, currentUser, receiver, messageText);
+        if (fperson.equals(currentUser)){
+            String receiver= sperson;
+            msgService.newMessage(id, currentUser, receiver, messageText);
+
+        }else{
+            String receiver= fperson;
+            msgService.newMessage(id, currentUser, receiver, messageText);
+
+        }
         List<messages> msgs=msgService.showMessages();
         List<messages> usersMsgs=new ArrayList<>();
         int p=msgs.size();
