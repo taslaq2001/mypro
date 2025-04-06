@@ -9,6 +9,7 @@ import com.mypro.mypro.model.staff;
 import com.mypro.mypro.model.tasks;
 import com.mypro.mypro.repository.chatsRepository;
 import com.mypro.mypro.repository.messagesRepository;
+import com.mypro.mypro.repository.staffRepository;
 import com.mypro.mypro.service.chatsService;
 import com.mypro.mypro.service.messagesService;
 import com.mypro.mypro.service.notificationsService;
@@ -28,6 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -137,6 +139,28 @@ public class staffController {
 
         return "ManagerOverview";
     }  
+
+    @Autowired staffRepository stfRepository;
+    @DeleteMapping("/delete3")
+    public String deleteUser(@RequestParam String dltuser){
+        staff user=stfRepository.findByUsername(dltuser);
+        List <tasks> tsks=tskService.showTasks();
+        int j=tsks.size();
+        for (int i=0; i<j;i++){
+            if(tsks.get(i).getAssigned_to()!=null&&tsks.get(i).getAssigned_to().equals(dltuser)){
+                tskService.delete(tsks.get(i));
+                j-=1;
+            }
+        }
+        stfservice.delete(user);
+         return"redirect:/api2/mngr";
+    }
+    public String postMethodName(@RequestBody String entity) {
+        //TODO: process POST request
+        
+        return entity;
+    }
+    
 
     @Autowired 
     private staffService stfservice;

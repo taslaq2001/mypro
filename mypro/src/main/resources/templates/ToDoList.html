@@ -558,10 +558,12 @@
             <td>
                 <span th:text="${task.privacy != null ? (task.privacy ? 'private' : 'not private') : 'not private'}"></span>
             </td>
-            <td class="dlt">
+            <td class="dlt" th:if="${task.privacy}" >
               <form th:action="@{/api1/delete/{id}(id=${task.task_id})}" method="post">
                 <input type="hidden" name="_method" value="delete"/>
+                
                 <button type="submit" class="delete">Delete</button>
+           
               </form>
             </td>
             
@@ -624,6 +626,8 @@
             document.querySelectorAll('.messages').forEach(div => {
                 div.style.display = 'none';
             });
+            document.body.style.overflow = 'auto';
+
         }
 
         function notNotified(){

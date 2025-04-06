@@ -3,9 +3,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mypro.mypro.model.messages;
+import com.mypro.mypro.model.notifications;
 import com.mypro.mypro.model.staff;
 import com.mypro.mypro.repository.messagesRepository;
+import com.mypro.mypro.repository.notificationsRepository;
 import com.mypro.mypro.service.messagesService;
+import com.mypro.mypro.service.notificationsService;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -32,6 +35,8 @@ class messagesController {
 
     @Autowired messagesRepository msgRepository;
     @Autowired messagesService msgService;
+    @Autowired notificationsRepository ntfcRepository;
+    @Autowired notificationsService ntfcService;
   
     @PostMapping("/send/{id}/{fperson}/{sperson}")   
     public String sendMessage(@PathVariable("id") Integer id, @PathVariable("fperson") String fperson,@PathVariable("sperson") String sperson, @RequestParam("messageText") String messageText, HttpServletRequest request, Model model) {
@@ -40,10 +45,14 @@ class messagesController {
         if (fperson.equals(currentUser)){
             String receiver= sperson;
             msgService.newMessage(id, currentUser, receiver, messageText);
+            notifications newNotific=ntfcService.newNotif("new message from : "+ currentUser, receiver);
+            ntfcRepository.save(newNotific);
 
         }else{
             String receiver= fperson;
             msgService.newMessage(id, currentUser, receiver, messageText);
+            notifications newNotific=ntfcService.newNotif("new message from : "+ currentUser, receiver);
+            ntfcRepository.save(newNotific);
 
         }
         List<messages> msgs=msgService.showMessages();
@@ -55,6 +64,7 @@ class messagesController {
             }
         }
         model.addAttribute("messages", usersMsgs);
+
         if (currentUser.startsWith("mngr")){
         return "redirect:/api2/mngr"; 
         }else{

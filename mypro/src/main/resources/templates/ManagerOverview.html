@@ -230,6 +230,17 @@
             font-family:'Trebuchet MS';
             cursor: pointer;
         }
+        .delete33{
+            background-color:rgb(168, 14, 6);
+            border:none;
+            border-radius: 5px;
+            color: rgb(250, 249, 253);
+            padding: 10px 6px;
+            text-align: center;
+            font-size: 10px;
+            font-family:'Trebuchet MS';
+            cursor: pointer;
+        }
         .deleteA{
             background-color:rgb(168, 14, 6);
             border:none;
@@ -415,6 +426,13 @@
             font-family: Verdana, Geneva, Tahoma, sans-serif;
             padding-left: 85px;
         }
+        .deleteC{
+            color:  white;
+            font-size:medium;
+            font-style: normal;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            padding-left: 85px;
+        }
         .marker {
             float: right;
             background-color: red;
@@ -447,6 +465,17 @@
     <div class ="bar">
         <a href="Welcome.html" class="a"><b>log out</b> </a>
         <a href="SignUp.html" class="a"><b>New user</b> </a> 
+        <form th:action="@{/api2/delete3}" method="post">
+            <p class="deleteC">delete user:
+        <select class="username" name="dltuser">
+            <option value="" hidden selected>Username</option>
+            <option th:each="user : ${staff}" th:value="${user.username}" th:text="${user.username}"></option>
+        </select>
+            
+            <input type="hidden" name="_method" value="delete"/>
+            <button type="submit" class="delete33">Delete</button>
+        </p>
+        </form>
                
         <div class="b" id="chat-side-button" onclick="side()">
             <b>messages</b>
@@ -736,6 +765,7 @@
             document.querySelectorAll('.messages').forEach(div => {
                 div.style.display = 'none';
             });
+            document.body.style.overflow = 'auto';
         }
 
 

@@ -82,6 +82,10 @@ public class staffService {
         }
         return managers;
     }
+
+    public void delete(staff user){
+        stfrepository.delete(user);
+    }
     
 
 }
