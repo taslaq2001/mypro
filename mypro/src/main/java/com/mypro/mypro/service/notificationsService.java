@@ -37,11 +37,15 @@ public class notificationsService {
             boolean status= notific.getSeen();
             Date d = notific.getCreated_at();
             Date dA=new Date(System.currentTimeMillis()-(10L * 24 * 60 * 60 * 1000));
-            if ((status==true||notific.getShow_to().equals("ANYONE"))  && d.before(dA)){
-                Notifics.remove(notific);
-                ntfcrepository.delete(notific);
-                i=-1;
+            if(d.before(dA)){
+                if (status==true||notific.getShow_to().equals("ANYONE") ){
+                    Notifics.remove(notific);
+                    ntfcrepository.delete(notific);
+                    i=-1;
+                }
+
             }
+
         }
         Collections.reverse(Notifics);
         return Notifics;

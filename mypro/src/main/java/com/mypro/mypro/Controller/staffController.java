@@ -96,9 +96,11 @@ public class staffController {
         List<chats> usersChats=new ArrayList<>();
         int m=chts.size();
         for (int n=0;n<m;n++){
-            if(chts.get(n).getFirst_person().equals(currentUser)||chts.get(n).getSecond_person().equals(currentUser)){
-                usersChats.add(chts.get(n));
-            }
+            if(!chts.get(n).getDeleted_by().equals(currentUser)){
+                if(chts.get(n).getFirst_person().equals(currentUser)||chts.get(n).getSecond_person().equals(currentUser)){
+                    usersChats.add(chts.get(n));
+                }
+           }
         }
         model.addAttribute("chats", usersChats);
 

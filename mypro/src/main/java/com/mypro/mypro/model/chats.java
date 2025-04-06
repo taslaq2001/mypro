@@ -19,6 +19,7 @@ public class chats {
     private Integer chat_id;
 	private String first_person;
 	private String second_person;
+    private String deleted_by;
 
     public void setFirst_person( String first_person){
         this.first_person=first_person;
@@ -38,5 +39,11 @@ public class chats {
 
     public Integer getChat_id(){
         return chat_id;
+    }
+    public void setDeleted_by(String deleted_by){
+        this.deleted_by=deleted_by;
+    }
+    public String getDeleted_by(){
+        return deleted_by;
     }
 }

@@ -19,6 +19,7 @@ public class chatsService {
         chats cht=new chats();
         cht.setFirst_person(first_person);
         cht.setSecond_person(second_person);
+        cht.setDeleted_by("NONE");
         return chtRepository.save(cht);
     }
 

@@ -113,9 +113,12 @@ public class tasksController{
         List<chats> usersChats=new ArrayList<>();
         int m=chts.size();
         for (int n=0;n<m;n++){
-            if(chts.get(n).getFirst_person().equals(currentUser)||chts.get(n).getSecond_person().equals(currentUser)){
-                usersChats.add(chts.get(n));
-            }
+           if(!chts.get(n).getDeleted_by().equals(currentUser)){
+                if(chts.get(n).getFirst_person().equals(currentUser)||chts.get(n).getSecond_person().equals(currentUser)){
+                    usersChats.add(chts.get(n));
+                }
+           }
+
         }
         model.addAttribute("chats", usersChats);
 
@@ -168,13 +171,21 @@ public class tasksController{
         if (cht.isPresent()) {
             chats chtA = cht.get();
             staff user = (staff) request.getSession().getAttribute("staff");
-            List<messages> msgs=mesgService.showMessages();
-            for(messages msg : msgs ){
-                if(msg.getChat_id()==id){
-                    msgRepository.delete(msg);
+            String currentUser=user.getUsername();
+
+            if(chtA.getDeleted_by().equals("NONE")){
+                chtA.setDeleted_by(currentUser);
+                chtRepository.save(chtA);
+            }else{
+                List<messages> msgs=mesgService.showMessages();
+                for(messages msg : msgs ){
+                    if(msg.getChat_id()==id){
+                        msgRepository.delete(msg);
+                    }
                 }
+                chtService.deleteChat(chtA);
             }
-            chtService.deleteChat(chtA);
+            
 
             if (user.getUsername().startsWith("mngr")){
                 
