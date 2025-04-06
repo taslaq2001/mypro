@@ -34,7 +34,6 @@ public class messagesService {
 
     public List<messages> showMessages(){
         List<messages>msgs=msgRepository.findAll();
-        //Collections.reverse(msgs);
         return msgs;
         
     }

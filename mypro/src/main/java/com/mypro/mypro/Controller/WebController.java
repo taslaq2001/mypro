@@ -19,23 +19,7 @@ import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
 public class WebController {
-    /* 
-    @Autowired
-    private staffService stfservice;
-    @PostMapping("/login")
-    public String logIn(@RequestParam String username,@RequestParam String password, Model model) throws NullPointerException {
-        try {
-            stfservice.loginStaff(username, password);
-            return "redirect:/api1/tasks";
-        } catch (NullPointerException e) {
-            // If login fails, add an error message and show the login page again
-            model.addAttribute("error", "Invalid username or password.");
-            return "Welcome"; 
-        }
-            
-    
-    }
-    */
+
     @Autowired
     private staffService stfservice;
     @PostMapping("/login")

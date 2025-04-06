@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-    <!--<link rel="stylesheet" href="../static/css/Calendar.css">-->  
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -146,7 +145,6 @@
         <div class="calendar-dates" id="calendar-dates"></div>
     </form>
 </div>
-<!--<script src="../static/js/Calendar.js"></script>-->
 <script>
     let date = new Date();
     let currentMonth = date.getMonth();
@@ -168,19 +166,16 @@
         let adjustedFirstDay = (firstDay === 0) ? 6 : firstDay - 1;
         monthYear.innerHTML = `${months[month]} ${year}`;
 
-        // Add empty divs for spacing before the first day
         for (let i = 0; i < adjustedFirstDay; i++) {
             const emptyDiv = document.createElement("div");
             emptyDiv.classList.add("empty");  
             calendarDates.appendChild(emptyDiv);
         }
 
-        // Create date buttons and forms
         for (let day = 1; day <= daysInMonth; day++) {
             const dayDiv = document.createElement("div");
             dayDiv.classList.add("calendar-day");
 
-            // Create the form for each day
             const form = document.createElement("form");
             form.action = "/api1/clndr";
             form.method = "post";
@@ -193,13 +188,12 @@
             const hiddenInput = document.createElement("input");
             hiddenInput.type = "hidden";
             hiddenInput.name = "taskdate";
-            hiddenInput.value = `${year}-${month + 1}-${day}`;  // Format: YYYY-MM-DD
+            hiddenInput.value = `${year}-${month + 1}-${day}`;  
 
             form.appendChild(hiddenInput);
             form.appendChild(button);
             dayDiv.appendChild(form);
 
-            // Highlight today’s date
             if (day === date.getDate() && year === date.getFullYear() && month === date.getMonth()) {
                 button.classList.add("today");
             }
@@ -226,7 +220,6 @@
         generateCalendar(currentMonth, currentYear);
     }
 
-    // Initialize calendar with current month and year
     generateCalendar(currentMonth, currentYear);
 
 

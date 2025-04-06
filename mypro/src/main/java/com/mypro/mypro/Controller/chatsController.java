@@ -44,6 +44,7 @@ public class chatsController {
         chats cht=new chats();
         cht.setFirst_person(sender);
         cht.setSecond_person(receiver);
+        cht.setDeleted_by("NONE");
         chtRepository.save(cht);
         
         if (user!=null){
@@ -76,6 +77,7 @@ public class chatsController {
         chats cht=new chats();
         cht.setFirst_person(sender);
         cht.setSecond_person(receiver);
+        cht.setDeleted_by("NONE");
         chtRepository.save(cht);
         if (user!=null){
             request.getSession().setAttribute("staff",user);

@@ -114,28 +114,7 @@ public class staffController {
         }
         model.addAttribute("messages", usersMsgs);
         model.addAttribute("currentUser", currentUser);
-        /*
-        Set<Integer> ids=new HashSet<>();
-        
-        for (int y=0; y<usersMsgs.size();y++){
-            Integer x=usersMsgs.get(y).getChat_id();
-            
-            ids.add(x);
 
-            
-        }
-        for ( Integer i : ids){
-            String j=i.toString();
-            Set<messages> msgsWids=new HashSet<>();
-            for (messages msg : usersMsgs){
-                if (msg.getChat_id()==i){
-                    msgsWids.add(msg);
-                }
-            }
-            model.addAttribute("msgs"+j, msgsWids);
-            System.out.println(currentUser);
-        }
-*/
         
         
 
@@ -158,7 +137,6 @@ public class staffController {
          return"redirect:/api2/mngr";
     }
     public String postMethodName(@RequestBody String entity) {
-        //TODO: process POST request
         
         return entity;
     }
@@ -183,12 +161,7 @@ public class staffController {
     }
     
 
-/*
-     @GetMapping("/login")
-    public String wlcm(){
-        return "Welcome";
-    }
- */
+
 
     @GetMapping("/manage")
     public String mng(Model model, HttpServletRequest request){
@@ -240,38 +213,7 @@ public class staffController {
         request.getSession().invalidate();
         return ("Welcome");
     }
-    /* 
-    @Autowired
-    private staffService stfservice2;
-    @PostMapping("/login")
-    public String logIn(@RequestParam String username,@RequestParam String password, Model model) throws NullPointerException {
-        try {
-            stfservice2.loginStaff(username, password);
-            return "redirect:/api1/tasks";
-        } catch (NullPointerException e) {
-            // If login fails, add an error message and show the login page again
-            model.addAttribute("error", "Invalid username or password.");
-            return "Welcome"; 
-        }
-    }
-    */
-    /* 
-    @Autowired
-    private staffService stfservice2;
-    @PostMapping("/login")
-    public String logIn(@RequestParam String username,@RequestParam String password, HttpServletRequest request) {
-        try {
-            staff user = stfservice2.validateLogin(username, password, request);
-            if (user!=null){
-                request.getSession().setAttribute("staff",user);
-                return "redirect:/api1/tasks";
-            }
-        }catch (Exception e) {
-            return "Welcome";
-        }
-        return "Welcome"; 
-    }
-        */
+
 
     
 }

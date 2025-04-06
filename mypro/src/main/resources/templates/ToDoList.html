@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-    <!--<link rel="stylesheet" href="../static/css/ToDoList.css">-->
-    <!--<script src="../static/js/ToDoList.js"></script>-->
+
     <style>
         body{
             background-color:rgb(223, 214, 214);
@@ -259,9 +258,9 @@
 
         .side-content {
             width: 30%;
-            height: 100vh; /* Full height */
-            overflow-y: auto; /* Scrollable if messages exceed the height */
-            background: #f1f1f1; /* Light background */
+            height: 100vh; 
+            overflow-y: auto; 
+            background: #f1f1f1; 
             padding: 10px;
         }
 
@@ -278,16 +277,16 @@
         }
 
         .messages {
-            display: none; /* Initially hidden */
+            display: none; 
            
             height: auto;
             background: #e9ecef;
             width: 100%;
-            max-height: 300px; /* Set a max height */
-            overflow-y: auto; /* Enables scrolling inside this div */
-            overflow-x: hidden; /* Prevents horizontal scrolling */
+            max-height: 300px; 
+            overflow-y: auto; 
+            overflow-x: hidden; 
             border-radius: 5px;
-            position: relative; /* Ensures it doesn’t affect the main page */
+            position: relative; 
             flex-direction: column;
         }
 
@@ -592,27 +591,13 @@
             </div>
         </div>
         <br><br>
-        <!--
-        <div class ="Container">
-            <button id="AddTask" class ="add" onclick="Add()">Add a new Task</button>
-            <div id="AddList" class ="List">
-                <form action= "/api1/add_tasks" method = "POST">
-                    <p><input type="text" placeholder="Title" name="title" rows=1 ></p>
-                    <p><input type="text" placeholder="Describtion" name="describtion" rows=1 ></p>
-                    <p><input type="text" placeholder="Assign it to person_id" name="assigned_to" rows=1 ></p>
-                    <p><input type="date" placeholder="Due Dtae" name="dueDate" rows=1 ></p>
-                    <p><input type="text" placeholder="Status" name="status" rows=1 ></p>
-                    <button type="submit">submit</button>
-                </form> 
-            </div>
-        </div>
-    -->
+
     </center>
 
     <script>
         function scrollToBottom(chatElement) {
             const messagesDiv = chatElement.querySelector('.messages');
-            messagesDiv.scrollTop = messagesDiv.scrollHeight; // Scrolls inside the div
+            messagesDiv.scrollTop = messagesDiv.scrollHeight; 
         }
         function toggleMessages(chatElement) {
             const messagesDiv = chatElement.querySelector('.messages');

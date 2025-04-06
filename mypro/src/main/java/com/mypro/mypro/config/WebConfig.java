@@ -1,4 +1,4 @@
-package com.mypro.mypro.config;  // adjust the package name accordingly
+package com.mypro.mypro.config;  
 
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;

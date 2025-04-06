@@ -118,7 +118,6 @@ class messagesController {
                 usersMessages.add(msg);
             }
         }
-        //model.addAttribute("messages", null);
         model.addAttribute("UsersMessages", usersMessages);
         model.addAttribute("currentUser", currentUser);
        return "Messages";
@@ -137,7 +136,6 @@ class messagesController {
                 usersMessages.add(msg);
             }
         }
-        //model.addAttribute("messages", null);
         model.addAttribute("UsersMessages", usersMessages);
         model.addAttribute("currentUser", currentUser);
         return "Messages";

@@ -37,27 +37,12 @@ public class staffService {
         user.setUsername(username);
         return stfrepository.save(user);
     }
-    /* 
-    public staff loginStaff(String username, String password)throws NullPointerException{
-        staff user=stfrepository.findByUsername(username);
-        if (user == null || !password.equals(user.getPassword())) {
-            throw new NullPointerException("Invalid username or password.");
-        }
-        return user;
-    }
-    */
-        public List<staff> showUsers(){
-                //
-            List<staff> allUsers = stfrepository.findAll();
-            //List<String> allUsernames = new ArrayList<>();
-            /* 
-            int i =allUsers.size();
-            for(int j=0;j<i;j++){
-                allUsernames.add(allUsers.get(j).getUsername());
-            }
-            return allUsernames;
-            */
-            return allUsers;
+ 
+    public List<staff> showUsers(){
+            
+        List<staff> allUsers = stfrepository.findAll();
+        
+        return allUsers;
             
     }
     public staff validateLogin(@RequestParam String username,@RequestParam String password, HttpServletRequest request) {

@@ -29,7 +29,7 @@ public class notificationsService {
     }
 
     public List<notifications> showNotifics(){
-                //
+                
         List<notifications> Notifics = ntfcrepository.findAll();
         int i = Notifics.size();
         for (int j=0; j<i;j++){

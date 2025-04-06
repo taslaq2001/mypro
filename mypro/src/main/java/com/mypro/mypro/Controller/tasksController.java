@@ -54,12 +54,7 @@ public class tasksController{
     @Autowired messagesRepository msgRepository;
     @Autowired messagesService mesgService;
 
-    /* 
-    @GetMapping("/tasks")
-    public String tsks(){
-        return "ToDoList";
-    }
-    */
+
     @GetMapping("/tasks")
     public String mainPage(HttpServletRequest request, Model model) {
         staff user = (staff) request.getSession().getAttribute("staff");
@@ -135,7 +130,6 @@ public class tasksController{
     }   
 
 
-    // Make sure to autowire the service properly
 
 
     @DeleteMapping("/delete/{id}")
@@ -155,9 +149,7 @@ public class tasksController{
                 if (taskA.getPrivacy()!=null && taskA.getPrivacy()){
                     tskService.delete(taskA);
                     return "redirect:/api1/tasks";
-                }/*else{
-                    redirectAttributes.addFlashAttribute("message","You can only delete your private tasks");
-                }*/
+                }
             }
             
         }
@@ -195,9 +187,7 @@ public class tasksController{
                 
                     
                     return "redirect:/api1/tasks";
-                /*else{
-                    redirectAttributes.addFlashAttribute("message","You can only delete your private tasks");
-                }*/
+                
             }
             
         }
@@ -548,40 +538,7 @@ public class tasksController{
     
   
     
-    /* 
-    @Autowired
-    private staffService stfservice;
-    @PostMapping("/login")
-    public String logIn(@RequestParam String username,@RequestParam String password, Model model) throws NullPointerException {
-        try {
-            stfservice.loginStaff(username, password);
-            return "redirect:/api1/tasks";
-        } catch (NullPointerException e) {
-            // If login fails, add an error message and show the login page again
-            model.addAttribute("error", "Invalid username or password.");
-            return "Welcome"; 
-        }
-    
-    }
-    */
-    /* 
-    @Autowired
-    private staffService stfservice;
-    @PostMapping("/login")
-    public String logIn(@RequestParam String username,@RequestParam String password, HttpServletRequest request) {
-        try {
-            staff user = stfservice.validateLogin(username, password, request);
-            if (user!=null){
-                request.getSession().setAttribute("staff",user);
-                return "redirect:/api1/tasks";
-            }
-        }catch (Exception e) {
-            return "Welcome";
-        }
-        return "Welcome"; 
-    
-    }
-        */
+
 
     @PostMapping("add_tasks")
     public String saveTasks( @RequestParam String title , @RequestParam String describtion, @RequestParam String assigned_to,@RequestParam String dueDate, HttpServletRequest request,  RedirectAttributes redirectAttributes) {
@@ -593,14 +550,7 @@ public class tasksController{
             String currentUser=user.getUsername();
             tskService.saveTask(title, describtion, assigned_to, parsedDueDate, status, completed_on, false, currentUser);
             tskService.showTasks();
-            /* 
-            staff user = (staff) request.getSession().getAttribute("staff");
-            if (user.getUsername().startsWith("mngr")){
-                return "redirect:/api2/mngr";
-            }
-            return "redirect:/api1/tasks";
-            
-            */
+  
             notifications newNotific=ntfcService.newNotif("new task has been added " + title, assigned_to);
             ntfcRepository.save(newNotific);
         
@@ -614,13 +564,7 @@ public class tasksController{
     @PostMapping("post_tasks")
     public String postTasks(@RequestParam String title , @RequestParam String describtion,@RequestParam String dueDate, HttpServletRequest request, RedirectAttributes redirectAttributes) {
 
-        /* 
-        staff user = (staff) request.getSession().getAttribute("staff");
-        if (user.getUsername().startsWith("mngr")){
-            return "redirect:/api2/mngr";
-        }
-        return "redirect:/api1/tasks";
-        */
+      
         try{
             Date completed_on=java.sql.Date.valueOf("1111-11-11");
             Date parsedDueDate = java.sql.Date.valueOf(dueDate);

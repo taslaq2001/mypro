@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-    <!--<link rel="stylesheet" href="../static/css/ToDoList.css">-->
-    <!--<script src="../static/js/ToDoList.js"></script>-->
+
     <style>
         body{
             background-color:rgb(223, 214, 214);
@@ -97,7 +96,7 @@
             background-color: rgb(86, 130, 224);
             text-align: center;
             color : white;
-            padding: 14px 16px;
+            padding: 22px 16px;
             text-decoration: none;
             font-size: larger;
             transition: background-color 0.3s ease; 
@@ -117,7 +116,7 @@
             display: block;
             color: white;
             text-align: center;
-            padding: 14px 16px;
+            padding: 22px 16px;
             text-decoration: none;
             font-size: larger;
             transition: background-color 0.3s ease;
@@ -137,10 +136,10 @@
             border-radius: 5px;
             display: block;
             color: white;
+            padding: 22px 14px;
             text-align: center;
-            padding: 14px 16px;
             text-decoration: none;
-            font-size: larger;
+            font-size:larger;
             transition: background-color 0.3s ease;
             cursor: pointer;
         }
@@ -149,6 +148,7 @@
             background-color: white;
             color: rgb(86, 130, 224);
             text-decoration: none;
+            cursor: pointer;
         }
         #chat-side{  
 
@@ -310,9 +310,9 @@
 
         .side-content {
             width: 30%;
-            height: 100vh; /* Full height */
-            overflow-y: auto; /* Scrollable if messages exceed the height */
-            background: #f1f1f1; /* Light background */
+            height: 100vh;
+            overflow-y: auto; 
+            background: #f1f1f1; 
             padding: 10px;
         }
 
@@ -329,17 +329,17 @@
         }
 
         .messages {
-            display: none; /* Initially hidden */
+            display: none; 
            
            
             background: #e9ecef;
             width: 100%;
             height:auto;
-            max-height: 300px; /* Set a max height */
-            overflow-y: auto; /* Enables scrolling inside this div */
-            overflow-x: hidden; /* Prevents horizontal scrolling */
+            max-height: 300px; 
+            overflow-y: auto; 
+            overflow-x: hidden; 
             border-radius: 5px;
-            position: relative; /* Ensures it doesn’t affect the main page */
+            position: relative; 
             flex-direction: column;
         }
 
@@ -535,6 +535,7 @@
                     <div class="marker" id="mrkr"></div>
                 </b>
             </div>
+        </form>
             <div class="dropdown-content" id="dropdown" >
                 <div th:each="notific : ${notifications}">
                     <p class="p4" th:text="${notific.seen}"></p>
@@ -545,7 +546,7 @@
                     <hr width=90%>
                 </div>
             </div>
-        </form>
+       
     </div> 
     <br><br><br><br>
     <form action="/api1/filter" method="post">
@@ -673,37 +674,9 @@
     </center>
 
     <script>
-        /*
-        document.getElementById('btndlt').addEventListener('click',function(event) {
-            event.preventDefault();
-            var taskId = document.getElementById('deleteForm').action.split('/').pop();
-            fetch("/api1/delete{taskId}", {
-                method:'DELETE',
-                headers:{
-                    'Content-Type': 'application/json'
-                }
-            }).then(response=>response.text()).then(data=>{alert(data)});
-        });
-           
-        document.getElementById("messageForm").addEventListener("submit", function(event) {
-            event.preventDefault(); // Prevent default form submission
-
-            const chatElement = this.closest('.indiv');
-
-// Call toggleMessages() with the chat element
-            toggleMessages(chatElement);
-
-        });
-
-         */   
+ 
 
         
-
-
-
-
-
-
         function notNotified(){
 
             const red=document.getElementById('mrkr');
@@ -749,7 +722,7 @@
 
         function scrollToBottom(chatElement) {
             const messagesDiv = chatElement.querySelector('.messages');
-            messagesDiv.scrollTop = messagesDiv.scrollHeight; // Scrolls inside the div
+            messagesDiv.scrollTop = messagesDiv.scrollHeight; 
         }
 
         function toggleMessages(chatElement) {
