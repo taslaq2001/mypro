@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,10 +6,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
 
     <style>
-        body{
-            background-color:rgb(223, 214, 214);
-            margin:0;
-            margin-bottom: 10px;
+        
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            
+        }
+        * {
+            box-sizing: border-box;
+        }
+        body::before {
+            content: "";
+            position: fixed; 
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url("/img/wp.jpg"); 
+            background-repeat: no-repeat; 
+            background-size: cover; 
+            background-position: center center; 
+            z-index: -1; 
         }
         .table{
             width: 90%;
@@ -16,6 +35,7 @@
             margin: auto;
             border-collapse: collapse;
             text-decoration: none;
+            opacity: 0.8;
 
         }
         #PostList{
@@ -28,7 +48,7 @@
             padding: 10px;
             background-color: #146096;
             color: white;
-            
+            font-family: 'Trebuchet MS';
             text-decoration: none;
         }
         .dlt{
@@ -36,13 +56,14 @@
             text-align: middle;
             vertical-align: middle;
             padding: 10px;
-            background-color: rgb(223, 214, 214);
+            background-image: url("/img/wp.jpg"); 
             color: white;
             text-decoration: none;
         }
         td {
             text-align: center;
             vertical-align: middle;
+            font-family: 'Trebuchet MS';
             padding: 10px;
             height: 45px;
             text-decoration: none;
@@ -78,71 +99,53 @@
 
         .bar{
             background-color: rgb(86, 130, 224);
-            overflow: hidden;
-            overflow: auto;
+            align-items: stretch; 
+            height: 60px; 
+            position: relative;
+            overflow: visible;
             display: flex;
             width:100%;
             padding: 0;
             margin: 0;
             box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            align-items: center;
 
             
 
         }
-        .bar .a {
-            float: left;
-            border-radius: 5px;
-            font-family:'Trebuchet MS';
-            background-color: rgb(86, 130, 224);
-            text-align: center;
-            color : white;
-            padding: 22px 16px;
-            text-decoration: none;
-            font-size: larger;
-            transition: background-color 0.3s ease; 
-            width: auto;
-        }
-        .bar .a:hover{
-            background-color: white; 
-            color: rgb(252, 56, 46); 
-            cursor: pointer; 
-            text-decoration: none; 
-        }
-        .bar .b {
-            float:right;
-            border-radius: 5px;
-            margin-left: auto;
-            font-family:'Trebuchet MS';
-            display: block;
-            color: white;
-            text-align: center;
-            padding: 22px 16px;
-            text-decoration: none;
-            font-size: larger;
-            transition: background-color 0.3s ease;
-            cursor: pointer;
-        }
-
-        .bar .b:hover {
-            background-color: white;
-            color: rgb(86, 130, 224);
-            text-decoration: none;
-            cursor: pointer;
-        }
 
         .bar .c {
-            float: right ;
-            font-family:'Trebuchet MS';
+            font-family: 'Trebuchet MS';
             border-radius: 5px;
-            display: block;
             color: white;
-            padding: 22px 14px;
             text-align: center;
             text-decoration: none;
-            font-size:larger;
+            font-size: larger;
             transition: background-color 0.3s ease;
             cursor: pointer;
+            padding: 0 16px;
+            display: flex;
+            align-items: center;
+            height: 100%; 
+            
         }
+        .bar .b {
+            margin-left: auto;
+            font-family: 'Trebuchet MS';
+            border-radius: 5px;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            font-size: larger;
+            transition: background-color 0.3s ease;
+            cursor: pointer;
+            padding: 0 16px;
+            display: flex;
+            align-items: center;
+            height: 100%; 
+            
+        }
+
 
         .bar .c:hover {
             background-color: white;
@@ -150,9 +153,16 @@
             text-decoration: none;
             cursor: pointer;
         }
+        .bar .b:hover {
+            background-color: white;
+            color: rgb(86, 130, 224);
+            text-decoration: none;
+            cursor: pointer;
+        }
         #chat-side{  
 
-            top: 52px;
+            top: 100%; 
+            max-height: 600px;
             position:absolute;
             overflow-y: auto;
             right:0;
@@ -161,7 +171,6 @@
             display: none; 
             background-color: white;
             color: black;
-            overflow: hidden;
             border-radius: 5px; 
             z-index: 1;
 
@@ -178,6 +187,7 @@
             font-size: 20px;
             font-family:'Trebuchet MS';
             cursor: pointer;
+            
         }
         button:hover {
             background-color: white; 
@@ -212,6 +222,7 @@
             font-size: 15px;
             font-family:'Trebuchet MS';
             cursor: pointer;
+            
         }
         .okseccond:hover {
             background-color: white; 
@@ -248,10 +259,22 @@
             color: rgb(250, 249, 253);
             padding: 4px 2px;
             text-align: center;
-            font-size: 1ßpx;
+            font-size: 20px;
             font-family:'Trebuchet MS';
             cursor: pointer;
             float: right;
+        }
+        .deleteB{
+            background-color:rgb(168, 14, 6);
+            border:none;
+            border-radius: 5px;
+            color: rgb(250, 249, 253);
+            padding: 4px 2px;
+            text-align: center;
+            font-size: 20px;
+            font-family:'Trebuchet MS';
+            cursor: pointer;
+            
         }
         .delete:hover {
             background-color: white; 
@@ -260,6 +283,12 @@
             text-decoration: none; 
         }
         .deleteA:hover {
+            background-color: white; 
+            color: rgb(86, 130, 224); 
+            cursor: pointer; 
+            text-decoration: none; 
+        }
+        .deleteB:hover {
             background-color: white; 
             color: rgb(86, 130, 224); 
             cursor: pointer; 
@@ -292,6 +321,7 @@
         .indivchat.active{
             width:30%;
         }
+ 
 
         .x{
             display: block;
@@ -309,16 +339,19 @@
         
 
         .side-content {
-            width: 30%;
-            height: 100vh;
-            overflow-y: auto; 
-            background: #f1f1f1; 
-            padding: 10px;
+            width: 30%; 
+            top: 100%; 
+            position: absolute; 
+            overflow-y: auto;
+            background: #f1f1f1;
+            
+            padding: 2px;
         }
+
 
         .indiv {
             cursor: pointer;
-            padding: 10px;
+            padding: 2px;
             border-bottom: 1px solid #ccc;
             background: white;
             transition: 0.3s;
@@ -344,6 +377,8 @@
         }
 
         .wr {
+            color: rgb(86, 130, 224); 
+            font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
             background: white;
             padding: 8px;
             border-radius: 5px;
@@ -351,6 +386,8 @@
             float: left;
         }
         .wrb{
+            color: rgb(86, 130, 224); 
+            font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
             background: white;
             padding: 8px;
             border-radius: 5px;
@@ -362,16 +399,16 @@
 
         
         input {
-            margin-left: 20px; 
-            padding: 5px 10px;
-            resize: none;
+            height: 30px;
+            width: 300px; 
             border-radius: 5px;
-            width: 150;
-            background-color: #f0efeb;
+            background: rgba(163, 164, 235, 0.1);
+            display: flex;
+            flex-direction: column;
         }
         input[placeholder]
         {
-        text-align: left;
+        text-align: center;
         font-family: Arial, Helvetica, sans-serif;
         color: black;
         }
@@ -401,14 +438,17 @@
         #dropdown{
             display: none; 
             position:absolute;
-            right:5px;
-            top:52px;
+            padding:5px;
+            top: 100%; 
+            left: 0;
+            max-width: 30%;
             background-color: white;
-            min-width: 200px; 
+            width: auto;
             box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2); 
             z-index: 1; 
             border-radius: 5px; 
-            overflow: hidden;
+            overflow-y: auto;
+            max-height: 300px;
         }
 
         .dropdown-content :hover {
@@ -426,7 +466,15 @@
             font-family: Verdana, Geneva, Tahoma, sans-serif;
             padding-left: 85px;
         }
+        .filteringb{
+            color:  #146096;
+            font-size:medium;
+            font-style: normal;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            padding-left: 95px;
+        }
         .deleteC{
+            display: none;
             color:  white;
             font-size:medium;
             font-style: normal;
@@ -458,32 +506,121 @@
         }
 
 
+ 
+        .dropdown-content-b{
+            display: none; 
+            position:absolute;
+            padding:5px;
+            top: 100%; 
+            left: 0;
+            max-width: 30%;
+            background-color: white;
+            width: auto;
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2); 
+            z-index: 1; 
+            border-radius: 5px; 
+            overflow-y: auto;
+            max-height: 300px;
+        }
+
+        .dropdown-content-b a {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            display: block;
+            padding: 10px;
+            text-decoration: none; 
+            color: black;
+        }
+
+        .dropdown-content-b a:hover {
+            background-color: rgb(86, 130, 224);
+            color: white;
+            cursor: pointer;
+        }
+
+        .dropdown-content-b hr {
+            margin: 0;
+            border: none;
+            border-top: 1px solid #ddd;
+        }
+        .menu-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .menu-button {
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 20px;
+        }
+
+
     </style>
      
 </head>
 <body onload="notNotified()">
+
     <div class ="bar">
-        <a href="Welcome.html" class="a"><b>log out</b> </a>
-        <a href="SignUp.html" class="a"><b>New user</b> </a> 
-        <form th:action="@{/api2/delete3}" method="post">
-            <p class="deleteC">delete user:
-        <select class="username" name="dltuser">
-            <option value="" hidden selected>Username</option>
-            <option th:each="user : ${staff}" th:value="${user.username}" th:text="${user.username}"></option>
-        </select>
+        
+        <div class="c" onclick="toggleDropdownb()">
+        &#8942;
+        </div>
+            <div  class="dropdown-content-b" id="dropdown-b">
+            <a href="Welcome.html" > &#x2190; log out </a>
+            <hr width=90%>
+            <a href="SignUp.html" >+ New user </a>
+            <hr width=90%>
+            <a onclick="dlt()">- Delete users</a> 
+            <hr width=90%>
+            <a href="Calendar.html">  &#x1F4C5;  Calendar</a>
+            <hr width=90%>
+            <a id="AddTask" class ="add" onclick="Add()"> + Assign a new Task</a>
+            <hr width=90%>
+            <a id="PostTask" class ="Post" onclick="post()">+ Post a new Task</a>
+            <hr width=90%>
+            <a id="AddTask2" class ="add" onclick="Addsecond()">+ Add a new Task</a>
+        </div>
+        
+
+
+        <form id="seenChange" action="/api3/notifications" method="post">
             
-            <input type="hidden" name="_method" value="delete"/>
-            <button type="submit" class="delete33">Delete</button>
-        </p>
+            <div class="c" onclick="toggleDropdown(); notified();submitForm()">
+                    &#128276;
+                    <div class="marker" id="mrkr"></div>
+            </div>
         </form>
+            <div class="dropdown-content-b" id="dropdown" >
+                <div th:each="notific : ${notifications}">
+                    <p class="p4" th:text="${notific.seen}"></p>
+                    <label>   </label>
+                    <p th:text=    "${notific.content}"></p>
+                    <label>   </label>
+                    <p class="p3" th:text="${notific.created_at}"></p3>
+                    <hr width=90%>
+                </div>
+            </div>
+
+            <form th:action="@{/api2/delete3}" method="post">
+                <p id="dltusr" class="deleteC">delete user:
+            <select class="username" name="dltuser">
+                <option value="" hidden selected>Username</option>
+                <option th:each="user : ${staff}" th:value="${user.username}" th:text="${user.username}"></option>
+            </select>
+                
+                <input type="hidden" name="_method" value="delete"/>
+                <button type="submit" class="delete33">Delete</button>
+            </p>
+            </form>
                
         <div class="b" id="chat-side-button" onclick="side()">
-            <b>messages</b>
+            <b>&#9993;</b>
         </div>
   
 
 
-        <div class="side-content" id="chat-side">
+        <div class="side-content" id="chat-side" >
+ 
+               
             <form action="/api4/chatting2">
                 <p class="filtering">Create new chat to:
                 <br>
@@ -493,23 +630,23 @@
                 </select>
                 <button class="okseccond" type="submit">ok</button>
                 </p>
-                <div class="deleteA" onclick="toggleMessagesb()">close chat windows </div>
             </form>
             <br><br>
             <div class="indiv" data-chat-id="${chat.chat_id}" th:each="chat : ${chats}" onclick="toggleMessages(this)">
+
                 
-                
+                <form class="close-chat-form">
+                    <button class="deleteA" onclick="toggleMessagesb()">x</button> 
+                </form>
                 <form th:action="@{/api1/delete1/{id}(id=${chat.chat_id})}" method="post">
                     <input type="hidden" name="_method" value="delete"/>
-                    <button type="submit" class="deleteA">-</button>
+                    <button type="submit" class="deleteB">-</button>
+                    
                   </form>
-                  
-                
-                    <p th:text="${chat.second_person eq currentUser ?   chat.first_person : chat.second_person }" >
+                    <p class="filteringb" th:text="${chat.second_person eq currentUser ?   chat.first_person : chat.second_person }" >
                         <label>    </label>
-
-
                     </p>
+                    
                 <form  th:action="@{/api5/send/{id}/{fperson}/{sperson}(id=${chat.chat_id}, fperson=${chat.first_person}, sperson=${chat.second_person})}" method="post"  >
                 <div class="messages" id="msgsid">
                     <div th:each="msg : ${messages}">
@@ -518,8 +655,8 @@
                         </span>
                         
                     </div>
-                    <p><input type="text"  placeholder="type..." name="messageText" rows="1"></p>
-                    <button id="sending"class="okseccond" type="submit" >send</button>
+                    <p><input type="text"  placeholder="type..." name="messageText" rows="1">
+                    <button id="sending"class="okseccond" type="submit" >send</button></p>
                 </div>
                 </form> 
             </div>
@@ -527,25 +664,8 @@
         </div>
         
 
-        <form id="seenChange" action="/api3/notifications" method="post">
-            <div class="c" onclick="toggleDropdown(); notified();submitForm()">
-                <b>
-                    notifications
-                    <label> </label>
-                    <div class="marker" id="mrkr"></div>
-                </b>
-            </div>
-        </form>
-            <div class="dropdown-content" id="dropdown" >
-                <div th:each="notific : ${notifications}">
-                    <p class="p4" th:text="${notific.seen}"></p>
-                    <label>   </label>
-                    <p th:text="${notific.content}"></p>
-                    <label>   </label>
-                    <p class="p3" th:text="${notific.created_at}"></p3>
-                    <hr width=90%>
-                </div>
-            </div>
+
+    
        
     </div> 
     <br><br><br><br>
@@ -622,23 +742,20 @@
     </table>
     <br><br><br><br><br><br><br><br>
     <center>
-        <a href="Calendar.html">
-            <button class = "go">Go to Calendar</button>
-        </a>
         <br><br><br>
         <div class ="Container">
-            <button id="AddTask" class ="add" onclick="Add()">Assign a new Task</button>
+            
             <div id="AddList" class ="List">
                 <form action= "/api1/add_tasks" method = "POST">
                     <p><input type="text" placeholder="Title" name="title" rows=1 ></p>
                     <p><input type="text" placeholder="Describtion" name="describtion" rows=1 ></p>
-                    <p>Assign the task to: </p>
+                    <p class="filtering">Assign the task to: </p>
                         <select class="username" name="assigned_to">
                             <option value="" hidden selected>Username</option>
                             <option th:each="user : ${staff}" th:value="${user.username}" th:text="${user.username}"></option>
                         </select>
                     
-                    <p>choose the due date</p>
+                    <p class="filtering">choose the due date</p>
                     <p><input type="date" name="dueDate" rows=1 ></p>
                     <button type="submit">submit</button>
                 </form> 
@@ -646,12 +763,12 @@
         </div>
         <br><br>
         <div class ="Container">
-            <button id="PostTask" class ="Post" onclick="post()">Post a new Task</button>
+            
             <div id="PostList" class ="List">
                 <form action= "/api1/post_tasks" method = "POST">
                     <p><input type="text" placeholder="Title" name="title" rows=1 ></p>
                     <p><input type="text" placeholder="Describtion" name="describtion" rows=1 ></p>
-                    <p>choose the due date</p>
+                    <p class="filtering">choose the due date</p>
                     <p><input type="date" name="dueDate" rows=1 ></p>
                     <button type="submit">submit</button>
                 </form> 
@@ -659,12 +776,12 @@
         </div>
         <br><br>
         <div class ="Container">
-            <button id="AddTask2" class ="add" onclick="Addsecond()">Add a new Task</button>
+            
             <div id="AddList2" class ="List">
                 <form action= "/api1/add_ownTasks" method = "POST">
                     <p><input type="text" placeholder="Title" name="title" rows=1 ></p>
                     <p><input type="text" placeholder="Describtion" name="describtion" rows=1 ></p>
-                    <p>choose the due date</p>
+                    <p class="filtering">choose the due date</p>
                     <p><input type="date" name="dueDate" rows=1 ></p>
                     <button type="submit">submit</button>
                 </form> 
@@ -734,9 +851,12 @@
             document.body.style.overflow = messagesDiv.style.display === 'flex' ? 'hidden' : 'auto';
         }
 
+
+
         function toggleMessagesb(){
             document.querySelectorAll('.messages').forEach(div => {
                 div.style.display = 'none';
+                
             });
             document.body.style.overflow = 'auto';
         }
@@ -751,14 +871,25 @@
                 dropdown.style.display='block';
             }
         }
+        function toggleDropdownb(){
+            const dropdown=document.getElementById('dropdown-b');
+            if (dropdown.style.display==='block'){
+                dropdown.style.display='none';
+            }else{
+                dropdown.style.display='block';
+            }
+        }
         function side(){
             const chatSide=document.getElementById("chat-side");
             if (chatSide.style.width==="30%"){
                 chatSide.style.width=0;
                 chatSide.style.display='none';
+                document.body.style.overflow = 'auto';
             }else{
                 chatSide.style.width="30%";
                 chatSide.style.display='block';
+                
+
             }
         }
       
@@ -781,6 +912,15 @@
                 addt.style.display='none';
             }else{
                 addt.style.display='block';
+                window.scrollTo(0, document.body.scrollHeight);
+            }
+        }
+        function dlt(){
+            const addt=document.getElementById('dltusr');
+            if (addt.style.display==='flex'){
+                addt.style.display='none';
+            }else{
+                addt.style.display='flex';
             }
         }
 
@@ -790,6 +930,7 @@
                 post.style.display='none';
             }else{
                 post.style.display='block';
+                window.scrollTo(0, document.body.scrollHeight);
             }
         }
 
@@ -799,6 +940,7 @@
                 addsecond.style.display='none';
             }else{
                 addsecond.style.display='block';
+                window.scrollTo(0, document.body.scrollHeight);
             }
         }
     </script>

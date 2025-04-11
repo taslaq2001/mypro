@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,32 +6,53 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
     <style>
         
-        body{
-            background-color: rgb(223, 214, 214);
-            margin-bottom: 10px;
-
-
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            
         }
-
+        * {
+            box-sizing: border-box;
+        }
+        body::before {
+            content: "";
+            position: fixed; 
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url("/img/wp.jpg"); 
+            background-repeat: no-repeat; 
+            background-size: cover; 
+            background-position: center center; 
+            z-index: -1; 
+        }
         .p1{
+            color: rgb(86, 130, 224); 
+            font-size: 30px;
+            font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        }
+        .p2{
             color:  #146096;
-            font-size:x-large;
+            font-size:medium;
             font-style: normal;
             font-family: Verdana, Geneva, Tahoma, sans-serif;
         }
-
         input {
             resize: none;
             overflow: auto;
-            border-radius: 30px;
-            background-color: #f0efeb;
+            border-radius: 5px;
+            background-color: white;
             height: 40px;
+            border: none;
+            width: 260px;
         }
         input[placeholder]
         {
         text-align: center;
-        font-family: Arial, Helvetica, sans-serif;
-        color: black;
+        font-family:monospace;
+        border-color:rgb(86, 130, 224);
         }
         button{
             background-color:rgb(86, 130, 224);
@@ -39,9 +61,10 @@
             color: rgb(250, 249, 253);
             padding: 15px 7px;
             text-align: center;
-            font-size: 20px;
+            font-size: 15px;
             font-family:'Trebuchet MS';
             cursor: pointer;
+            width:280px;
         }
         button:hover {
             background-color: white; 
@@ -54,25 +77,52 @@
             font-weight: bold;
             font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
         }
+        .login-box {
+            
+            position:absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 5px;
+            background: rgba(163, 164, 235, 0.1);
+            backdrop-filter: blur(5px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+            display: flex;
+            flex-direction: column;
+            width: 300px;
+            transition: backdrop-filter 0.5s ease;
+            padding-bottom: 10px;
+            }
+
+            .login-box:focus-within {
+            backdrop-filter: blur(50px);
+            }
+
 
     </style>
-     
-</head>
-<body>
-    <center>
-        <BR><BR><BR><BR><BR><BR><BR><BR> 
-        <p class="p1">Please fill up the following fields</p>
-        <br>
-        <form action="/api2/saveUser" method="POST">
-        <p><input type="text" placeholder="Name" name="name"required cols ="35" rows=1 ></p>            
-        <p><input type="text" placeholder="Username" name="username"required cols ="35" rows=1 ></p>
-        <p><input type="email" placeholder="Email" name="email"required cols ="35" rows=1 ></p>
-        <p><input type="password" placeholder="Password" name="password"required cols ="35" rows=1 ></p>
-        <p><input type="password" placeholder="Confirm Password" name="confirmPassword"required cols ="35" rows=1 ></p>
-        <button type="submit" class="ButtonEnter">Enter</button>
-        <div th:if="${error}" class="error">
-            <p th:text="${error}"></p>
-        </div>        
-        </form>
-    </center>
-</body>
+    <body>
+        <div class="background"></div>
+    
+        <div class="login-box">
+        <center>
+            <BR><BR>
+            <p class="p2">Please fill up the following fields
+                <br><br>
+                managers usernames should start with "mngr"
+            </p>
+            <br>
+            <form action="/api2/saveUser" method="POST">
+            <p><input type="text" placeholder="Name" name="name" onfocus="this.placeholder=''" onblur="this.placeholder='Nmae'"></p>            
+            <p><input type="text" placeholder="Username" name="username" onfocus="this.placeholder=''" onblur="this.placeholder='Username'" ></p>
+            <p><input type="email" placeholder="Email" name="email" onfocus="this.placeholder=''" onblur="this.placeholder='Email'" ></p>
+            <p><input type="password" placeholder="Password" name="password" onfocus="this.placeholder=''" onblur="this.placeholder='Password'" ></p>
+            <p><input type="password" placeholder="Confirm Password" name="confirmPassword" onfocus="this.placeholder=''" onblur="this.placeholder='Confrm Password'"></p>
+            <BR>
+            <button type="submit" class="ButtonLogIn">Enter</button>
+            <div th:if="${error}" class="error">
+                <p th:text="${error}"></p>
+            </div>        
+            </form>
+        </center>
+        </div>
+    </body>

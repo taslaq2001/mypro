@@ -4,15 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            flex-direction: column;
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 60px;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
-            background-color: rgb(223, 214, 214);
-            margin: 0;
+            overflow: hidden;
+  
+        }
+        * {
+            box-sizing: border-box;
+        }
+        body::before {
+            content: "";
+            position: fixed; 
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url("/img/wp.jpg"); 
+            background-repeat: no-repeat; 
+            background-size: cover; 
+            background-position: center center; 
+            z-index: -1; 
         }
 
         .calendar {
@@ -25,6 +40,8 @@
             border-top-left-radius: 15px; 
             border-bottom-right-radius: 15px; 
             border-bottom-left-radius: 15px; 
+            opacity: 0.8;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
         }
 
         .calendar-header {
@@ -41,8 +58,9 @@
         .prev{
             float: left;
             display: block;
-            border-radius: 50%;
+            border-radius: 5px;
             font-size: 40px;
+            padding: 5px 5px;
         }
         .prev:hover{
             background-color:rgb(187, 179, 179);
@@ -51,8 +69,9 @@
         .next{
             float: right;
             display: block;
-            border-radius: 50%;
+            border-radius: 5px;
             font-size: 40px;
+            padding: 5px 5px;
         }
         .next:hover{
             background-color:rgb(187, 179, 179);
@@ -64,10 +83,11 @@
             grid-template-columns: repeat(7, 1fr);
             background-color:  rgb(86, 130, 224);
             color: white;
+            font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
         }
 
         .calendar-days div {
-            padding: 10px;
+            padding: 20px;
             text-align: center;
             font-weight: bold;
         }
@@ -78,9 +98,10 @@
         }
 
         .calendar-day {
-            padding: 30px;
+            padding: 10px;
             text-align: center;
             font-weight: bold;
+           
         }
 
         .clndrtsk {
@@ -89,7 +110,7 @@
             border: none;
             background: none;
             cursor: pointer;
-            font-size: 18px;
+            font-size: 25px;
             font-weight: bold;
             transition: all 0.3s ease-in-out;
         }
@@ -104,7 +125,7 @@
             background-color: #146096;
             color: white;
             font-weight: bold;
-            border-radius: 50px;
+            border-radius: 5px;
         }
 
         .empty {
@@ -120,17 +141,26 @@
             padding-left: 40px;
         }
 
+        .p1{
+            color: white; 
+            font-size: 25px;
+            font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        }
 
     </style>   
 </head>
 <body>
+    
+    <center>
+    <div class="background"></div>
+    
     <p class="choose"> klick on the date to see the tasks on that date</p>
-
+    <br>
     <div class="calendar">
     <div class="calendar-header">
-        <b class="prev" onclick="prevMonth()"> &#10094;</b>
-        <b class="next" onclick="nextMonth()">&#10095;</b>
-        <h1 id="month-year"></h1>
+        <b class="prev" onclick="prevMonth()">   &#10094;  </b>
+        <b class="next" onclick="nextMonth()">   &#10095;  </b>
+        <h1 class="p1" id="month-year"></h1>
     </div>
     <div class="calendar-days">
         <div>Mon</div>
@@ -145,6 +175,7 @@
         <div class="calendar-dates" id="calendar-dates"></div>
     </form>
 </div>
+</center>
 <script>
     let date = new Date();
     let currentMonth = date.getMonth();
