@@ -304,6 +304,11 @@ public class tasksController{
         }
         
     }
+
+    @GetMapping("/clndr")
+    public String backToMaiinPage3(HttpServletRequest request) {
+        return wbcntrlr.mngrOrUser(request);
+    }
     
 
     @PostMapping("add_tasks")
