@@ -24,13 +24,11 @@ public class notificationsController {
     public void notificationsSeen(HttpServletRequest request) {
         String currentUser = wbcntrlr.getCurrentUser(request);
         List<notifications> notificsList=ntfcService.showNotifics();
-        List<notifications> notifics=new ArrayList<>();
         int l=notificsList.size();
         for (int h=0;h<l;h++){
             if(notificsList.get(h).getShow_to().equals(currentUser)){
-                notifics.add(notificsList.get(h));
-                notifics.get(h).setSeen(true);
-                ntfcRepository.save(notifics.get(h));
+                notificsList.get(h).setSeen(true);
+                ntfcRepository.save(notificsList.get(h));
             }
 
         }
