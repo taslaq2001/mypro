@@ -30,46 +30,32 @@ class messagesController {
     @PostMapping("/send/{id}/{fperson}/{sperson}")   
     public String sendMessage(@PathVariable("id") Integer id, @PathVariable("fperson") String fperson,@PathVariable("sperson") String sperson, @RequestParam("messageText") String messageText, HttpServletRequest request, Model model) {
         String currentUser=wbcntrlr.getCurrentUser(request);
+        String receiver;
+        messages msg;
         if (fperson.equals(currentUser)){
-            String receiver= sperson;
-            messages msg=msgService.newMessage(id, currentUser, receiver, messageText);
-            notifications newNotific=ntfcService.newNotif("new message from : "+ currentUser, receiver);
-            ntfcRepository.save(newNotific);
-            List<messages> msgs=msgService.showMessages();
-            List<messages> usersMsgs=new ArrayList<>();
-            int p=msgs.size();
-            for (int q=0;q<p;q++){
-                if(msgs.get(q).getSender().equals(currentUser)||msgs.get(q).getReceiver().equals(currentUser)){
-                    usersMsgs.add(msgs.get(q));
-                }
-            }
-            model.addAttribute("messages", usersMsgs);
-            Integer chtId=msg.getChat_id();
-            if (currentUser.startsWith("mngr")){
-                return "redirect:/api2/mngr?curChat="+chtId;
-            }else{
-                return "redirect:/api1/tasks?curChat="+chtId;
-            }
+            receiver= sperson;
+
         }else{
-            String receiver= fperson;
-            messages msg=msgService.newMessage(id, currentUser, receiver, messageText);
-            notifications newNotific=ntfcService.newNotif("new message from : "+ currentUser, receiver);
-            ntfcRepository.save(newNotific);
-            List<messages> msgs=msgService.showMessages();
-            List<messages> usersMsgs=new ArrayList<>();
-            int p=msgs.size();
-            for (int q=0;q<p;q++){
-                if(msgs.get(q).getSender().equals(currentUser)||msgs.get(q).getReceiver().equals(currentUser)){
-                    usersMsgs.add(msgs.get(q));
-                }
+            receiver= fperson;
+
+        }
+        msg=msgService.newMessage(id, currentUser, receiver, messageText);
+        notifications newNotific=ntfcService.newNotif("new message from : "+ currentUser, receiver);
+        ntfcRepository.save(newNotific);
+        List<messages> msgs=msgService.showMessages();
+        List<messages> usersMsgs=new ArrayList<>();
+        int p=msgs.size();
+        for (int q=0;q<p;q++){
+            if(msgs.get(q).getSender().equals(currentUser)||msgs.get(q).getReceiver().equals(currentUser)){
+                usersMsgs.add(msgs.get(q));
             }
-            model.addAttribute("messages", usersMsgs);
-            Integer chtId=msg.getChat_id();
-            if (currentUser.startsWith("mngr")){
-                return "redirect:/api2/mngr?curChat="+chtId;
-            }else{
-                return "redirect:/api1/tasks?curChat="+chtId;
-            }
+        }
+        model.addAttribute("messages", usersMsgs);
+        Integer chtId=msg.getChat_id();
+        if (currentUser.startsWith("mngr")){
+            return "redirect:/api2/mngr?curChat="+chtId;
+        }else{
+            return "redirect:/api1/tasks?curChat="+chtId;
         }
 
         
