@@ -29,8 +29,14 @@ public class chatsController {
     @GetMapping("/chatting2")
     public String createChat(@RequestParam String receiver, HttpServletRequest request, Model model) {
         model.addAttribute("staff",stfService.showUsers());
-        chtService.newChat(receiver, wbcntrlr.getCurrentUser(request));
-        return wbcntrlr.mngrOrUser(request); 
+        chats cht=chtService.newChat(receiver, wbcntrlr.getCurrentUser(request));
+        Integer chtId=cht.getChat_id();
+        String currentUser=wbcntrlr.getCurrentUser(request);
+        if (currentUser.startsWith("mngr")){
+            return "redirect:/api2/mngr?curChat="+chtId;
+        }else{
+            return "redirect:/api1/tasks?curChat="+chtId;
+        }
     }
 
     

@@ -40,7 +40,7 @@ public class staffController {
 
 
     @GetMapping("/mngr")
-    public String mainPage(HttpServletRequest request, Model model) {
+    public String mainPage(HttpServletRequest request, Model model, @RequestParam(required = false) Integer curChat,@RequestParam(required = false)Integer delCht) {
 
         if (!wbcntrlr.validLogin(request)) {return "Welcome";}
 
@@ -52,6 +52,15 @@ public class staffController {
         model.addAttribute("chats", chtService.showUsersChats(request));
         model.addAttribute("messages", mesgService.showUsersMessages(request));
         model.addAttribute("currentUser", currentUser);
+
+        if (curChat!=null){
+            model.addAttribute("currentChat", curChat);
+        }
+
+        if (delCht!=null){
+            model.addAttribute("delChtTxt", "the other person deleted his chat\ncreate a new one to contact them");
+            model.addAttribute("delChtId", delCht);
+        }
 
         return "ManagerOverview";
     } 

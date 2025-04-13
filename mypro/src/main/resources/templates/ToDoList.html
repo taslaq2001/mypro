@@ -521,7 +521,7 @@
     </style>
      
 </head>
-<body onload="notNotified()">
+<body onload="notNotified(),openCurChat()">
     <div class ="bar">
         <div class="c" onclick="toggleDropdownb()">
             &#8942;
@@ -571,7 +571,7 @@
                 </p>
             </form>
             <br><br>
-            <div class="indiv" data-chat-id="${chat.chat_id}" th:each="chat : ${chats}" onclick="toggleMessages(this)">
+            <div class="indiv" th:attr="data-chat-id=${chat.chat_id}" th:each="chat : ${chats}" onclick="toggleMessages(this)">
                 <form class="close-chat-form">
                     <button class="deleteA" onclick="toggleMessagesb()">x</button> 
                 </form>
@@ -585,11 +585,14 @@
 
                   
                 
-                    <p class ="filteringb" th:text="${chat.second_person eq currentUser ?   chat.first_person : chat.second_person }" >
-                        <label>    </label>
-
-
-                    </p>
+                  <div class="filteringb">
+                    <span th:text="${chat.second_person eq currentUser ? chat.first_person : chat.second_person}"></span>
+                    
+                    <div th:if="${delChtTxt != null and chat.chat_id == delChatId}" class="error">
+                        <p th:text="${delChtTxt}"></p>
+                    </div>
+                </div>
+                
             <form  th:action="@{/api5/send/{id}/{fperson}/{sperson}(id=${chat.chat_id}, fperson=${chat.first_person}, sperson=${chat.second_person})}" method="post"  >
                 <div class="messages" id="msgsid">
                     <div th:each="msg : ${messages}">
@@ -704,7 +707,26 @@
 
     </center>
 
-    <script>
+    <script th:inline="javascript">
+        function openCurChat(){
+            var currentChatValue = [[${currentChat}]];
+            if (currentChatValue && currentChatValue !== 0) {
+                const chatSide = document.getElementById("chat-side");
+                chatSide.style.width = "30%";
+                chatSide.style.display = 'block';
+                const chatElement = document.querySelector(`.indiv[data-chat-id="${currentChatValue}"]`);
+
+            if (chatElement) {
+                const messagesDiv = chatElement.querySelector('.messages');
+                if (messagesDiv) {
+                    messagesDiv.style.display = 'flex';
+                    messagesDiv.scrollTop = messagesDiv.scrollHeight; 
+                    document.body.style.overflow = 'hidden';
+                }
+            }
+
+            }
+        }
         function scrollToBottom(chatElement) {
             const messagesDiv = chatElement.querySelector('.messages');
             messagesDiv.scrollTop = messagesDiv.scrollHeight; 

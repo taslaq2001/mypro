@@ -32,25 +32,46 @@ class messagesController {
         String currentUser=wbcntrlr.getCurrentUser(request);
         if (fperson.equals(currentUser)){
             String receiver= sperson;
-            msgService.newMessage(id, currentUser, receiver, messageText);
+            messages msg=msgService.newMessage(id, currentUser, receiver, messageText);
             notifications newNotific=ntfcService.newNotif("new message from : "+ currentUser, receiver);
             ntfcRepository.save(newNotific);
+            List<messages> msgs=msgService.showMessages();
+            List<messages> usersMsgs=new ArrayList<>();
+            int p=msgs.size();
+            for (int q=0;q<p;q++){
+                if(msgs.get(q).getSender().equals(currentUser)||msgs.get(q).getReceiver().equals(currentUser)){
+                    usersMsgs.add(msgs.get(q));
+                }
+            }
+            model.addAttribute("messages", usersMsgs);
+            Integer chtId=msg.getChat_id();
+            if (currentUser.startsWith("mngr")){
+                return "redirect:/api2/mngr?curChat="+chtId;
+            }else{
+                return "redirect:/api1/tasks?curChat="+chtId;
+            }
         }else{
             String receiver= fperson;
-            msgService.newMessage(id, currentUser, receiver, messageText);
+            messages msg=msgService.newMessage(id, currentUser, receiver, messageText);
             notifications newNotific=ntfcService.newNotif("new message from : "+ currentUser, receiver);
             ntfcRepository.save(newNotific);
-        }
-        List<messages> msgs=msgService.showMessages();
-        List<messages> usersMsgs=new ArrayList<>();
-        int p=msgs.size();
-        for (int q=0;q<p;q++){
-            if(msgs.get(q).getSender().equals(currentUser)||msgs.get(q).getReceiver().equals(currentUser)){
-                usersMsgs.add(msgs.get(q));
+            List<messages> msgs=msgService.showMessages();
+            List<messages> usersMsgs=new ArrayList<>();
+            int p=msgs.size();
+            for (int q=0;q<p;q++){
+                if(msgs.get(q).getSender().equals(currentUser)||msgs.get(q).getReceiver().equals(currentUser)){
+                    usersMsgs.add(msgs.get(q));
+                }
+            }
+            model.addAttribute("messages", usersMsgs);
+            Integer chtId=msg.getChat_id();
+            if (currentUser.startsWith("mngr")){
+                return "redirect:/api2/mngr?curChat="+chtId;
+            }else{
+                return "redirect:/api1/tasks?curChat="+chtId;
             }
         }
-        model.addAttribute("messages", usersMsgs);
-        return wbcntrlr.mngrOrUser(request); 
+
         
              
     }
