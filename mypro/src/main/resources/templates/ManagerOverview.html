@@ -657,8 +657,10 @@
                         </span>
                         
                     </div>
+                    <span th:if="${chat.dltText==null}">
                     <p><input type="text"  placeholder="type..." name="messageText" rows="1">
                     <button id="sending"class="okseccond" type="submit" >send</button></p>
+                    </span>
                 </div>
                 </form> 
             </div>
