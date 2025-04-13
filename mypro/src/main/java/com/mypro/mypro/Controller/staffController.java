@@ -1,5 +1,7 @@
 package com.mypro.mypro.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.mypro.mypro.model.chats;
 import com.mypro.mypro.model.staff;
 import com.mypro.mypro.model.tasks;
 import com.mypro.mypro.repository.chatsRepository;
@@ -46,20 +48,15 @@ public class staffController {
 
         String currentUser=wbcntrlr.getCurrentUser(request);
 
+        model.addAttribute("chats", chtService.showUsersChats(request));
         model.addAttribute("tasks",tskService.showUsersTasks(request));
         model.addAttribute("staff",stfService.showUsers());
         model.addAttribute("notifications", ntfcService.showUsersNotifics(request));
-        model.addAttribute("chats", chtService.showUsersChats(request));
         model.addAttribute("messages", mesgService.showUsersMessages(request));
         model.addAttribute("currentUser", currentUser);
 
         if (curChat!=null){
             model.addAttribute("currentChat", curChat);
-        }
-
-        if (delCht!=null){
-            model.addAttribute("delChtTxt", "the other person deleted his chat\ncreate a new one to contact them");
-            model.addAttribute("delChtId", delCht);
         }
 
         return "ManagerOverview";

@@ -43,7 +43,7 @@ public class tasksController{
 
 
     @GetMapping("/tasks")
-    public String mainPage(HttpServletRequest request, Model model, @RequestParam(required = false) Integer curChat,@RequestParam(required = false)Integer delCht) {
+    public String mainPage(HttpServletRequest request, Model model, @RequestParam(required = false) Integer curChat) {
 
         if (!wbcntrlr.validLogin(request)) {return "Welcome";}
         String currentUser=wbcntrlr.getCurrentUser(request);
@@ -58,13 +58,7 @@ public class tasksController{
         if (curChat!=null){
             model.addAttribute("currentChat", curChat);
         }
-
-        if (delCht!=null){
-            model.addAttribute("delChtTxt", "the other person deleted his chat\ncreate a new one to contact them");
-            model.addAttribute("delChtId", delCht);
-        }
-
-                    
+            
         return "ToDoList";
     }   
 
@@ -94,6 +88,7 @@ public class tasksController{
             chats chtA = cht.get();
             if(chtA.getDeleted_by().equals("NONE")){
                 chtA.setDeleted_by(currentUser);
+                chtA.setDltText("the other person deleted this chat<br/>create a new one to contact them<br/>you can still view this chat");
                 chtRepository.save(chtA);
             }else{
                 List<messages> msgs=mesgService.showMessages();
@@ -106,11 +101,7 @@ public class tasksController{
             }
             
         }
-        if (currentUser.startsWith("mngr")){
-            return "redirect:/api2/mngr?delCht="+id;
-        }else{
-            return "redirect:/api1/tasks?delCht="+id;
-        }
+        return wbcntrlr.mngrOrUser(request);
             
     }
 

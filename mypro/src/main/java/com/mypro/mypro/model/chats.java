@@ -20,6 +20,7 @@ public class chats {
 	private String first_person;
 	private String second_person;
     private String deleted_by;
+    private String dltText;
 
     public void setFirst_person( String first_person){
         this.first_person=first_person;
@@ -45,5 +46,13 @@ public class chats {
     }
     public String getDeleted_by(){
         return deleted_by;
+    }
+
+    public String getDltText(){
+        return dltText;
+    }
+
+    public void setDltText(String dltText){
+        this.dltText=dltText;
     }
 }

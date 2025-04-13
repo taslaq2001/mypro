@@ -643,13 +643,10 @@
                     <button type="submit" class="deleteB">-</button>
                     
                   </form>
-                  <div class="filteringb">
-                    <span th:text="${chat.second_person eq currentUser ? chat.first_person : chat.second_person}"></span>
-                    
-                    <div th:if="${delChtTxt != null and chat.chat_id == delChatId}" class="error">
-                        <p th:text="${delChtTxt}"></p>
-                    </div>
-                </div>
+                  <p class ="filteringb" th:text="${chat.second_person eq currentUser ?   chat.first_person : chat.second_person }" >
+                    <label>    </label>
+                </p>
+                <p class="error" th:utext="${chat.dltText}"></p>
                 
                     
                 <form  th:action="@{/api5/send/{id}/{fperson}/{sperson}(id=${chat.chat_id}, fperson=${chat.first_person}, sperson=${chat.second_person})}" method="post"  >
