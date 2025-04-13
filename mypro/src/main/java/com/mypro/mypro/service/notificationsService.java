@@ -58,15 +58,8 @@ public class notificationsService {
         List<notifications> usersNotifications=new ArrayList<>();
         int l=notificsList.size();
         for (int h=0;h<l;h++){
-            if (currentUser.startsWith("mngr")){
-                if(notificsList.get(h).getShow_to().equals("managers") || notificsList.get(h).getShow_to().equals("ANYONE")||notificsList.get(h).getShow_to().equals(currentUser)){
-                    usersNotifications.add(notificsList.get(h));
-                }
-            }else{
-                if(notificsList.get(h).getShow_to().equals("ANYONE")||notificsList.get(h).getShow_to().equals(currentUser) ){
-                    usersNotifications.add(notificsList.get(h));
-                }
-    
+            if(notificsList.get(h).getShow_to().equals("ANYONE")||notificsList.get(h).getShow_to().equals(currentUser) ){
+                usersNotifications.add(notificsList.get(h));
             }
 
         }

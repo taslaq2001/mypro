@@ -40,6 +40,7 @@
             height: 60px;
             text-align: middle;
             vertical-align: middle;
+            font-family: 'Trebuchet MS';
             padding: 10px;
             background-color: #146096;
             color: white;
@@ -58,6 +59,7 @@
         td {
             text-align: center;
             vertical-align: middle;
+            font-family: 'Trebuchet MS';
             padding: 10px;
             height: 45px;
             text-decoration: none;
@@ -638,6 +640,7 @@
         <tr>
             <th>Title</th>
             <th>Describtion</th>
+            <th>Assigned by</th>
             <th>Due Date</th>
             <th>Status</th>
             <th>Created on</th>
@@ -649,6 +652,7 @@
         <tr class="td" th:each="task : ${tasks}">
             <td th:text="${task.title}"></td>
             <td th:text="${task.describtion}"></td>
+            <td th:text="${task.assigned_by}"></td>
             <td th:text="${task.dueDate}"></td>
             <td>
                 <span th:text="${task.status}"></span>

@@ -697,6 +697,7 @@
         <tr>
             <th>Title</th>
             <th>Describtion</th>
+            <th>Assigned by</th>
             <th>Due Date</th>
             <th>Status</th>
             <th>Created on</th>
@@ -707,6 +708,7 @@
         <tr class="td" th:each="task : ${tasks}">
             <td th:text="${task.title}"></td>
             <td th:text="${task.describtion}"></td>
+            <td th:text="${task.assigned_by}"></td>
             <td th:text="${task.dueDate}"></td>
             <td>
                 <span th:text="${task.status}"></span>

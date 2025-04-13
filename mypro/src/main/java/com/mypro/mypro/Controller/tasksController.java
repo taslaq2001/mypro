@@ -123,7 +123,7 @@ public class tasksController{
             }
 
             tskrepository.save(taskA);
-            notifications newNotific=ntfcService.newNotif("change in the status of task : "+taskA.getTitle().toString(), "managers");
+            notifications newNotific=ntfcService.newNotif("change in the status of task : "+taskA.getTitle().toString(), taskA.getAssigned_by());
             ntfcRepository.save(newNotific);
 
         }
