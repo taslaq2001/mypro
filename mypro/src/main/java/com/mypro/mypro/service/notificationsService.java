@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.mypro.mypro.Controller.WebController;
 import com.mypro.mypro.model.notifications;
-import com.mypro.mypro.model.tasks;
 import com.mypro.mypro.repository.notificationsRepository;
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -38,7 +37,7 @@ public class notificationsService {
             Date d = notific.getCreated_at();
             Date dA=new Date(System.currentTimeMillis()-(7L * 24 * 60 * 60 * 1000));
             if(d.before(dA)){
-                if (status||notific.getShow_to().equals("ANYONE")){
+                if (status||notific.getShow_to()==null){
                     iterator.remove();
                     ntfcrepository.delete(notific);
                 }
@@ -59,7 +58,7 @@ public class notificationsService {
         List<notifications> usersNotifications=new ArrayList<>();
         int l=notificsList.size();
         for (int h=0;h<l;h++){
-            if(notificsList.get(h).getShow_to().equals("ANYONE")||notificsList.get(h).getShow_to().equals(currentUser) ){
+            if(notificsList.get(h).getShow_to()==null||notificsList.get(h).getShow_to().equals(currentUser) ){
                 usersNotifications.add(notificsList.get(h));
             }
 

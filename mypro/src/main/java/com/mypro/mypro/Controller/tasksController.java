@@ -71,9 +71,16 @@ public class tasksController{
         Optional<tasks> taskOptional = tskrepository.findById(id);
         if (taskOptional.isPresent()) {
             tasks taskA = taskOptional.get();
+            if(taskA.getTitle().startsWith("TO ANYONE")){
+                notifications newNotific=ntfcService.newNotif("one task has been deleted " + taskA.getTitle(), null);
+                ntfcRepository.save(newNotific);
+            }else{
+                notifications newNotific=ntfcService.newNotif("one task has been deleted " + taskA.getTitle(), taskA.getAssigned_to());
+                ntfcRepository.save(newNotific);
+            }
             tskService.delete(taskA);
-            notifications newNotific=ntfcService.newNotif("one task has been deleted " + taskA.getTitle(), taskA.getAssigned_to());
-            ntfcRepository.save(newNotific);
+            
+            
         }
   
         return wbcntrlr.mngrOrUser(request); 
@@ -349,7 +356,7 @@ public class tasksController{
             tskService.saveTask(title1, describtion, null, parsedDueDate, status, completed_on, false, currentUser);
             tskService.showTasks();
             
-            notifications newNotific=ntfcService.newNotif("new task has been added " + title, "ANYONE");
+            notifications newNotific=ntfcService.newNotif("new task has been added " + title, null);
             ntfcRepository.save(newNotific);
 
         }catch(Exception e){
